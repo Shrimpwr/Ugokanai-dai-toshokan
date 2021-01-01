@@ -21,6 +21,7 @@ def get_real_address(url):
         "remix_userkey": "9df24a5274a9f199658810aaa7b3e591",
         "remix_userid": "6118916"
     }
+    # 考虑增加登录模块，避免从浏览器复制cookie的麻烦
     res = requests.get(url, headers=HEADERS, cookies=COOKIES,allow_redirects=False)
     return res.headers['Location'] if res.status_code == 302 else ""
 
@@ -40,5 +41,3 @@ def downloadfile(link, name, referer): #利用wget从真实dlink下载书籍文�
     wget.download(dlink, path)
 
 downloadfile("https://zh.1lib.org/book/4989630/29a81f", "Data Science", "https://zh.1lib.org/s/python")
-# dlink = "https://zh.1lib.us/dl/3601991/9b125b"
-# print(get_real_address(dlink))
