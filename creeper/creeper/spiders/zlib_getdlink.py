@@ -38,4 +38,3 @@ class ZlibGetdlinkSpider(scrapy.Spider):
             "file_type": response.css("a.dlButton::text").getall()[1].split("(")[1].split(',')[0]
         })
         yield item
-        

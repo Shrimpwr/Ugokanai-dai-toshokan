@@ -31,5 +31,3 @@ class ZlibSpider(scrapy.Spider):
                 'authors': book.css("div.authors a::text").getall(),
             })
             yield item
-
-
