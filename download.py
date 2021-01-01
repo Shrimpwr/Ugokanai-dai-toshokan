@@ -17,20 +17,28 @@ def get_real_address(url):
         "Accept-Encoding": "gzip, deflate",
         "Accept-Language": "zh-CN,zh;q=0.9,en;q=0.8,en-GB;q=0.7,en-US;q=0.6"
     }
-    res = requests.get(url, headers=HEADERS, allow_redirects=False)
-    return res.headers['Location'] if res.status_code == 302 else None
+    COOKIES = {
+        "remix_userkey": "9df24a5274a9f199658810aaa7b3e591",
+        "remix_userid": "6118916"
+    }
+    res = requests.get(url, headers=HEADERS, cookies=COOKIES,allow_redirects=False)
+    return res.headers['Location'] if res.status_code == 302 else ""
 
-def getdlink(link):
-    os.system(r"getdlink_spider.bat " + link)
-    with open('./data/dlink.json', 'r') as f: data = json.load(f)[0]
-    dlink, file_type = data.values()
-    dlink = get_real_address(dlink)
+def getdlink(link, referer):
+    dlink = file_type = ""
+    while "dtoken" not in dlink:
+        os.system(r"getdlink_spider.bat " + link + ' ' + referer)
+        with open('../data/dlink.json', 'r') as f: data = json.load(f)[0]
+        dlink, file_type = data.values()
+        dlink = get_real_address(dlink)
     return dlink, file_type
 
-def downloadfile(link, name): #利用wget从真实dlink下载书籍文件，正确命名并存放到bookfiles文件夹
-    dlink, file_type = getdlink(link)
+def downloadfile(link, name, referer): #利用wget从真实dlink下载书籍文件，正确命名并存放到bookfiles文件夹
+    dlink, file_type = getdlink(link, referer)
     file_name = name + '.' + file_type
     path = '../bookfiles/' + file_name
     wget.download(dlink, path)
 
-downloadfile("https://zh.1lib.us/book/3601991/d7c3d6", "Beginning Programing")
+downloadfile("https://zh.1lib.org/book/4989630/29a81f", "Data Science", "https://zh.1lib.org/s/python")
+# dlink = "https://zh.1lib.us/dl/3601991/9b125b"
+# print(get_real_address(dlink))

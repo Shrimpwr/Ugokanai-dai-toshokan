@@ -8,7 +8,7 @@ class ZlibSpider(scrapy.Spider):
     }
 
     def start_requests(self):
-        url = "https://zh.1lib.us/s/"
+        url = "https://zh.1lib.org/s/"
         kword = getattr(self, 'keyword', None)
         page = getattr(self, 'page', None)
         flag = False
@@ -25,9 +25,9 @@ class ZlibSpider(scrapy.Spider):
         for book in response.css('div.resItemBoxBooks'):
             item = zlibItem({
                 'title': book.css("h3 a::text").get(),
-                'link' : "https://zh.1lib.us" + book.css("h3 a::attr(href)").get(),
-                'coverlink_s': ('https://zh.1lib.us/img/book-no-cover.png' if (book.css("div.itemCoverWrapper img::attr(src)").get() == 'img/book-no-cover.png' or book.css("div.itemCoverWrapper img::attr(data-src)").get() == '/img/cover-not-exists.png') else  book.css("div.itemCoverWrapper img::attr(data-src)").get()),
-                'coverlink_l': ('https://zh.1lib.us/img/book-no-cover.png' if (book.css("div.itemCoverWrapper img::attr(src)").get() == 'img/book-no-cover.png' or book.css("div.itemCoverWrapper img::attr(data-src)").get() == '/img/cover-not-exists.png') else ("https://covers.zlibcdn2.com/covers200/books" + book.css("div.itemCoverWrapper img::attr(data-src)").get()[43:])),
+                'link' : "https://zh.1lib.org" + book.css("h3 a::attr(href)").get(),
+                'coverlink_s': ('https://zh.1lib.org/img/book-no-cover.png' if (book.css("div.itemCoverWrapper img::attr(src)").get() == 'img/book-no-cover.png' or book.css("div.itemCoverWrapper img::attr(data-src)").get() == '/img/cover-not-exists.png') else  book.css("div.itemCoverWrapper img::attr(data-src)").get()),
+                'coverlink_l': ('https://zh.1lib.org/img/book-no-cover.png' if (book.css("div.itemCoverWrapper img::attr(src)").get() == 'img/book-no-cover.png' or book.css("div.itemCoverWrapper img::attr(data-src)").get() == '/img/cover-not-exists.png') else ("https://covers.zlibcdn2.com/covers200/books" + book.css("div.itemCoverWrapper img::attr(data-src)").get()[43:])),
                 'authors': book.css("div.authors a::text").getall(),
             })
             yield item

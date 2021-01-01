@@ -11,6 +11,8 @@ class ZlibGetdlinkSpider(scrapy.Spider):
     }
     
     def start_requests(self):
+        referer = getattr(self, 'referer', None)
+        url = getattr(self, 'link', None)
         HEADERS = {
             "Upgrade-Insecure-Requests": "1",
             "DNT": "1",
@@ -20,16 +22,19 @@ class ZlibGetdlinkSpider(scrapy.Spider):
             "Sec-Fetch-Mode": "navigate",
             "Sec-Fetch-User": "?1",
             "Sec-Fetch-Dest": "document",
-            #"Referer": "https://zh.1lib.us/s/python?page=1",
+            "Referer": referer,
             "Accept-Encoding": "gzip, deflate, br",
             "Accept-Language": "zh-CN,zh;q=0.9,en;q=0.8,en-GB;q=0.7,en-US;q=0.6"
         }
-        url = getattr(self, 'link', None)
-        yield scrapy.Request(url=url, headers=HEADERS, callback=self.parse)
+        COOKIES = {
+        "remix_userkey": "9df24a5274a9f199658810aaa7b3e591",
+        "remix_userid": "6118916"
+        }
+        yield scrapy.Request(url=url, headers=HEADERS, cookies=COOKIES,callback=self.parse)
 
     def parse(self, response):
         item = dlinkItem({
-            "dlink": "https://zh.1lib.us" + response.css("a.dlButton::attr(href)").get(),
+            "dlink": "https://zh.1lib.org" + response.css("a.dlButton::attr(href)").get(),
             "file_type": response.css("a.dlButton::text").getall()[1].split("(")[1].split(',')[0]
         })
         yield item
