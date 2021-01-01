@@ -30,7 +30,7 @@ def getdlink(link):
 def downloadfile(link, name): #利用wget从真实dlink下载书籍文件，正确命名并存放到bookfiles文件夹
     dlink, file_type = getdlink(link)
     file_name = name + '.' + file_type
-    path = './bookfiles/' + file_name
+    path = '../bookfiles/' + file_name
     wget.download(dlink, path)
 
-downloadfile("https://zh.1lib.us/book/3641986/812370", "Python Basics")
+downloadfile("https://zh.1lib.us/book/3601991/d7c3d6", "Beginning Programing")

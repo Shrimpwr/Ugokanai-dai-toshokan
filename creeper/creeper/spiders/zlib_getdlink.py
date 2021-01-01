@@ -20,7 +20,7 @@ class ZlibGetdlinkSpider(scrapy.Spider):
             "Sec-Fetch-Mode": "navigate",
             "Sec-Fetch-User": "?1",
             "Sec-Fetch-Dest": "document",
-            "Referer": "https://zh.1lib.us/s/python?page=1",
+            #"Referer": "https://zh.1lib.us/s/python?page=1",
             "Accept-Encoding": "gzip, deflate, br",
             "Accept-Language": "zh-CN,zh;q=0.9,en;q=0.8,en-GB;q=0.7,en-US;q=0.6"
         }
