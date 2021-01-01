@@ -34,7 +34,7 @@ def getdlink(link, referer):
         dlink = get_real_address(dlink)
     return dlink, file_type
 
-def downloadfile(link, name, referer): #利用wget从真实dlink下载书籍文件，正确命名并存放到bookfiles文件夹
+def downloadfile(link, name, referer): # 利用wget从真实dlink下载书籍文件，正确命名并存放到bookfiles文件夹
     dlink, file_type = getdlink(link, referer)
     file_name = name + '.' + file_type
     path = './bookfiles/' + file_name
