@@ -28,7 +28,7 @@ def getdlink(link, referer):
     dlink = file_type = ""
     while "dtoken" not in dlink:
         os.system(r"getdlink_spider.bat " + link + ' ' + referer)
-        with open('../data/dlink.json', 'r') as f: data = json.load(f)[0]
+        with open('./data/dlink.json', 'r') as f: data = json.load(f)[0]
         dlink, file_type = data.values()
         dlink = get_real_address(dlink)
     return dlink, file_type
@@ -36,7 +36,7 @@ def getdlink(link, referer):
 def downloadfile(link, name, referer): #利用wget从真实dlink下载书籍文件，正确命名并存放到bookfiles文件夹
     dlink, file_type = getdlink(link, referer)
     file_name = name + '.' + file_type
-    path = '../bookfiles/' + file_name
+    path = './bookfiles/' + file_name
     wget.download(dlink, path)
 
 downloadfile("https://zh.1lib.org/book/4989630/29a81f", "Data Science", "https://zh.1lib.org/s/python")

@@ -11,7 +11,7 @@ from scrapy.exporters import JsonItemExporter
 class Search_Pipeline:
 
     def __init__(self):
-        self.file = open('../../data/search_results.json', 'wb')
+        self.file = open('../data/search_results.json', 'wb')
         self.exporter = JsonItemExporter(self.file,encoding='utf-8',ensure_ascii=False)
         self.exporter.start_exporting()
 
@@ -26,7 +26,7 @@ class Search_Pipeline:
 class Getdlink_Pipeline:
 
     def __init__(self):
-        self.file = open('../../data/dlink.json', 'wb')
+        self.file = open('../data/dlink.json', 'wb')
         self.exporter = JsonItemExporter(self.file,encoding='utf-8',ensure_ascii=False)
         self.exporter.start_exporting()
 
