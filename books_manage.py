@@ -19,10 +19,10 @@ class treenode: # 利用树形结构实现文件夹操作，支持创建，删�
         data = json.loads(file)
         self.is_dir = data["is_dir"]
         self.info = data["info"]
-        for i in data["sons"]: # 递归调用，建树
+        for each_son in data["sons"]: # 递归调用，建树
             son = treenode(False, {}, [])
-            ii = json.dumps(i) # 将儿子的dict再转成字符串，递归解析，用json.dumps()而不直接str()是为了避免单引号在后续解析中报错。
-            son.read_file(ii)
+            each_son_str = json.dumps(each_son) # 将儿子的dict再转成字符串，递归解析，用json.dumps()而不直接str()是为了避免单引号在后续解析中报错。
+            son.read_file(each_son_str)
             self.insert(son)
         del data
 
@@ -37,9 +37,40 @@ class treenode: # 利用树形结构实现文件夹操作，支持创建，删�
 
     def sort(self, key):
         self.sons = qsort(self.sons, key)
-        
-class hash: #  用于查找的hash
-    pass
+
+class Hash:
+    def __init__(self):
+        self.list = []
+        self.p = 65537
+
+    def get_hash(self,item):
+        src=item['title']
+        temp=src.encode("utf-8")
+        i=int.from_bytes(temp, byteorder='little', signed=False)
+        m=i%self.p
+        return m
+
+    def create_hashtable(self,items): #传入链表，构造哈希表
+        for item in items:
+            i=self.get_hash(item)
+            l=len(self.list)
+            if i>l-1:
+                for j in range (l,i+1):
+                    if j==i:
+                        self.list.append([item])
+                    else:
+                        self.list.append([])
+            else:
+                self.list[i].append(item)
+
+    def search(self,src):   # 精确查找,找到返回该数据，找不到返回-1
+        temp=src.encode("utf-8")
+        n=int.from_bytes(temp, byteorder='little', signed=False)
+        i=n%self.p
+        for each in self.list[i]:
+            if each['title']==src:
+                return each
+        return -1
 
 def qsort(items, key): # 使用快速排序算法将items内的元素按关键字key排序
     if len(items) >= 2:
