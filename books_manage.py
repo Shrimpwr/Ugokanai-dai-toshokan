@@ -15,27 +15,30 @@ class treenode: # 利用树形结构实现文件夹操作，支持创建，删�
         self.sons.remove(son)
         del son
 
-    def readfile(self, file): # 从文件读入本地书籍目录, 用到了json与实体类的互转
-        data = json.load(file, object_hook=self.dict2node)
+    def read_file(self, file): # 从文件读入本地书籍目录, 用到了json与实体类的互转
+        data = json.loads(file)
         self.is_dir = data["is_dir"]
         self.info = data["info"]
         for i in data["sons"]: # 递归调用，建树
             son = treenode(False, {}, [])
-            son.readfile(str(i))
+            ii = json.dumps(i) # 将儿子的dict再转成字符串，递归解析，用json.dumps()而不直接str()是为了避免单引号在后续解析中报错。
+            son.read_file(ii)
             self.insert(son)
         del data
 
-    def dict2node(self, d):
-        return treenode(d['is_dir'], d['info'], d['sons'])
-
-    def export_to_file(self, filename): # 书籍目录更新时，需要将书籍目录导出至文件
-        # with open("./data/" + filename, "w") as f: f.write(json.dumps(obj=self.__dict__,ensure_ascii=False))
-        pass
+    def export_to_file(self): # 书籍目录更新时，需要将书籍目录导出至json文件
+        data = {}
+        data["is_dir"] = self.is_dir
+        data["info"] = self.info
+        data["sons"] = []
+        for each_son in self.sons: # 递归调用，建树
+            data["sons"].append(each_son.export_to_file())
+        return data
 
     def sort(self, key):
         self.sons = qsort(self.sons, key)
         
-class hash:
+class hash: #  用于查找的hash
     pass
 
 def qsort(items, key): # 使用快速排序算法将items内的元素按关键字key排序
@@ -63,6 +66,3 @@ def cmp(a, b, key):
             return a.info[key][0] <= b.info[key][0] # 作者可能有多个的情况，只比较第一个作者
     else:
         return a.is_dir
-    
-# sys.path.append('C:\\Users\\Shrimpwr\\Desktop\\Study\\softwaredev_course_design\\source') 
-# from books_manage import treenode

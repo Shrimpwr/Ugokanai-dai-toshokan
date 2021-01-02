@@ -2,6 +2,7 @@ import sys
 import os
 from PyQt5.QtWidgets import QApplication, QMainWindow
 import download
+import json
 import books_manage as manage
 import Ui_untitled
 
@@ -14,7 +15,13 @@ if __name__ == '__main__':
     root.insert(book2)
     root.sort("authors")
     print(root.sons[0].info["authors"], root.sons[1].info["authors"])
-    #with open("./data/booklist.json", "r") as f: root.readfile(f)
+    with open("./data/booklist.json", "w") as f:
+        data = root.export_to_file()
+        f.write(json.dumps(obj=data,ensure_ascii=False))
+    with open("./data/booklist.json", "r") as f: 
+        filestr = f.read()
+        root.read_file(filestr)
+    print(root)
     # app = QApplication(sys.argv)
     # MainWindow = QMainWindow()
     # ui = Ui_untitled.Ui_MainWindow()
