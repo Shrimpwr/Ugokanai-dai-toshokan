@@ -40,4 +40,4 @@ def downloadfile(link, name, referer): # 利用wget从真实dlink下载书籍文
     path = './bookfiles/' + file_name
     wget.download(dlink, path)
 
-downloadfile("https://zh.1lib.org/book/4989630/29a81f", "Data Science", "https://zh.1lib.org/s/python")
+# downloadfile("https://zh.1lib.org/book/4989630/29a81f", "Data Science", "https://zh.1lib.org/s/python")

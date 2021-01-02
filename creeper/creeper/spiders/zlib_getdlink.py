@@ -27,8 +27,8 @@ class ZlibGetdlinkSpider(scrapy.Spider):
             "Accept-Language": "zh-CN,zh;q=0.9,en;q=0.8,en-GB;q=0.7,en-US;q=0.6"
         }
         COOKIES = {
-        "remix_userkey": "9df24a5274a9f199658810aaa7b3e591",
-        "remix_userid": "6118916"
+            "remix_userkey": "9df24a5274a9f199658810aaa7b3e591",
+            "remix_userid": "6118916"
         }
         yield scrapy.Request(url=url, headers=HEADERS, cookies=COOKIES,callback=self.parse)
 
