@@ -44,31 +44,31 @@ class Hash:
         self.p = 65537
 
     def get_hash(self,item):
-        src=item['title']
-        temp=src.encode("utf-8")
-        i=int.from_bytes(temp, byteorder='little', signed=False)
-        m=i%self.p
+        src = item.info['title']
+        temp = src.encode("utf-8")
+        i = int.from_bytes(temp, byteorder = 'little', signed = False)
+        m = i % self.p
         return m
 
-    def create_hashtable(self,items): #传入链表，构造哈希表
-        for item in items:
-            i=self.get_hash(item)
-            l=len(self.list)
-            if i>l-1:
-                for j in range (l,i+1):
-                    if j==i:
+    def create_hashtable(self, root): #传入root, 递归构造哈希表
+        for item in root.sons:
+            i = self.get_hash(item)
+            l = len(self.list)
+            if i > l - 1:
+                for j in range (l, i + 1):
+                    if j == i:
                         self.list.append([item])
                     else:
                         self.list.append([])
             else:
                 self.list[i].append(item)
 
-    def search(self,src):   # 精确查找,找到返回该数据，找不到返回-1
-        temp=src.encode("utf-8")
-        n=int.from_bytes(temp, byteorder='little', signed=False)
-        i=n%self.p
+    def search(self,src):   # 精确查找,找到返回treenode，找不到返回-1
+        temp = src.encode("utf-8")
+        n = int.from_bytes(temp, byteorder = 'little', signed=False)
+        i = n % self.p
         for each in self.list[i]:
-            if each['title']==src:
+            if each['title'] == src:
                 return each
         return -1
 
