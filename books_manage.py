@@ -9,7 +9,10 @@ class treenode: # 利用树形结构实现文件夹操作，支持创建，删�
         self.father = self
 
     def insert(self, son):
-        self.sons.append(son)
+        if son.is_dir:
+            self.sons = [son] + self.sons # 文件夹默认排在最前面
+        else:
+            self.sons.append(son)
         son.father = self
 
     def remove(self, son):

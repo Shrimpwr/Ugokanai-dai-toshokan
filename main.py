@@ -27,22 +27,29 @@ def __finish__(): # 程序退出，导出booklist文件
         data = root.export_to_file()
         f.write(json.dumps(obj=data,ensure_ascii=False))
 
-def addbook(dir): # 向目录中添加书籍
+def add_book(dir): # 向目录中添加书籍
     with open("./data/search_results.json", "r", encoding='utf-8') as f:
         results = json.load(f)
         for book in results:
-            if hashtable.search(book["title"]) != -1:
+            if hashtable.search(book["title"]) != -1: # 检索哈希表，若本地书库中已有同名书籍，则不添加
                 continue
-            # 检索哈希表，若本地书库中已有同名书籍，则不添加
-            newnode = manage.treenode(False, book, [])
-            dir.insert(newnode)
-            hashtable.insert(newnode)
+            newbook = manage.treenode(False, book, [])
+            dir.insert(newbook)
+            hashtable.insert(newbook)
 
-def downloadbook(book):
+def add_dir(father_dir, title):
+    temp = hashtable.search(title)
+    if temp != -1 and temp in father_dir.sons: # 同一个上级目录下不允许存在两个同名文件夹
+        return -1  
+    newdir = manage.treenode(True, {"title":title}, [])
+    father_dir.insert(newdir)
+    hashtable.insert(newdir)
+        
+def download_book(book):
     file_type = download.downloadfile(book.info["link"], book.info["title"])
     book.info["file_type"] = file_type
 
-def delbook(book):
+def del_book(book):
     dir = book.father
     if "file_type" in book.info:
         os.remove("./bookfiles/" + book.info["title"].replace(": ", "：") + "." + book.info["file_type"])
@@ -54,12 +61,13 @@ def search_online(keyword): # 运行在线搜索爬虫
 if __name__ == '__main__':
     root, hashtable = __init__()
     search_online("python")
-    addbook(root)
+    add_book(root)
     root.sort("title")
-    downloadbook(root.sons[1])
+    download_book(root.sons[1])
     temp = hashtable.search(root.sons[1].info["title"])
     print(temp.info["authors"])
-    delbook(temp)
+    del_book(temp)
+    add_dir(root, "learning")
     # app = QApplication(sys.argv)
     # MainWindow = QMainWindow()
     # ui = Ui_untitled.Ui_MainWindow()
