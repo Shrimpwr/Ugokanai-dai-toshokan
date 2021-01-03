@@ -26,14 +26,12 @@ def addbook(root):
 
 if __name__ == '__main__':
     root = __init__()
-
-    for book in root.sons:
-        print(book.info["title"])
+    addbook(root)
     root.sort("authors")
-    for book in root.sons:
-        print(book.info["title"])
+    #download.downloadfile(root.sons[0].info["link"], root.sons[0].info["title"])
     
     __finish__(root)
+
     # app = QApplication(sys.argv)
     # MainWindow = QMainWindow()
     # ui = Ui_untitled.Ui_MainWindow()

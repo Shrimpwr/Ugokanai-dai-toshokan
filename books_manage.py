@@ -38,7 +38,7 @@ class treenode: # 利用树形结构实现文件夹操作，支持创建，删�
     def sort(self, key):
         self.sons = qsort(self.sons, key)
 
-class Hash:
+class hash:
     def __init__(self):
         self.list = []
         self.p = 65537
@@ -50,7 +50,7 @@ class Hash:
         m = i % self.p
         return m
 
-    def create_hashtable(self, root): #传入root, 递归构造哈希表
+    def create_hashtable(self, root): #传入root, 递归构造哈希表, 在同一地址使用列表避免冲突
         for item in root.sons:
             i = self.get_hash(item)
             l = len(self.list)
@@ -62,6 +62,8 @@ class Hash:
                         self.list.append([])
             else:
                 self.list[i].append(item)
+            if item.is_dir:
+                self.create_hashtable(item) # 递归到下一层
 
     def search(self,src):   # 精确查找,找到返回treenode，找不到返回-1
         temp = src.encode("utf-8")

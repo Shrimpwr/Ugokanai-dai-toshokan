@@ -25,19 +25,20 @@ def get_real_address(url):
     res = requests.get(url, headers=HEADERS, cookies=COOKIES,allow_redirects=False)
     return res.headers['Location'] if res.status_code == 302 else ""
 
-def getdlink(link, referer):
+def getdlink(link):
     dlink = file_type = ""
     while "dtoken" not in dlink:
-        os.system(r"getdlink_spider.bat " + link + ' ' + referer)
+        os.system(r"getdlink_spider.bat " + link)
         with open('./data/dlink.json', 'r') as f: data = json.load(f)[0]
         dlink, file_type = data.values()
         dlink = get_real_address(dlink)
     return dlink, file_type
 
-def downloadfile(link, name, referer): # 利用wget从真实dlink下载书籍文件，正确命名并存放到bookfiles文件夹
-    dlink, file_type = getdlink(link, referer)
+def downloadfile(link, name): # 利用wget从真实dlink下载书籍文件，正确命名并存放到bookfiles文件夹
+    dlink, file_type = getdlink(link)
     file_name = name + '.' + file_type
     path = './bookfiles/' + file_name
-    wget.download(dlink, path)
+    wget.download(dlink, out = path)
 
-# downloadfile("https://zh.1lib.org/book/4989630/29a81f", "Data Science", "https://zh.1lib.org/s/python")
+downloadfile("https://zh.1lib.org/book/3641986/812370", "Python Basics: A Self-Teaching Introduction")
+# 已知问题：标题中出现英文冒号和空格连在一起的情况会导致文件名被截断，下载的文件无法成功保存

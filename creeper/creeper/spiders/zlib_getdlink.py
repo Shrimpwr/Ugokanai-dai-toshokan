@@ -11,7 +11,6 @@ class ZlibGetdlinkSpider(scrapy.Spider):
     }
     
     def start_requests(self):
-        referer = getattr(self, 'referer', None)
         url = getattr(self, 'link', None)
         HEADERS = {
             "Upgrade-Insecure-Requests": "1",
@@ -22,7 +21,6 @@ class ZlibGetdlinkSpider(scrapy.Spider):
             "Sec-Fetch-Mode": "navigate",
             "Sec-Fetch-User": "?1",
             "Sec-Fetch-Dest": "document",
-            "Referer": referer,
             "Accept-Encoding": "gzip, deflate, br",
             "Accept-Language": "zh-CN,zh;q=0.9,en;q=0.8,en-GB;q=0.7,en-US;q=0.6"
         }
