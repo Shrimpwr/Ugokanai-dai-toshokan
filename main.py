@@ -47,10 +47,10 @@ def search_online(keyword): # 运行在线搜索爬虫
     
 if __name__ == '__main__':
     root, hashtable = __init__()
-    # search_online("python")
-    # addbook(root)
-    # root.sort("title")
-    downloadbook(root.sons[0])
+    search_online("python")
+    addbook(root)
+    root.sort("title")
+    downloadbook(root.sons[1])
     temp = hashtable.search("Introduction to Machine Learning with Python: A Guide for Data Scientists")
     print(temp.info["authors"])
     # delbook(root.sons[0])
