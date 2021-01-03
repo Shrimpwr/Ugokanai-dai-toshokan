@@ -1,4 +1,5 @@
-bookfiles/*
-data/*
+bookfiles/*.pdf
+bookfiles/*.epub
+data/*.json
 .vscode/
 __pycache__/
