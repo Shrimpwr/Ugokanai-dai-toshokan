@@ -59,7 +59,7 @@ if __name__ == '__main__':
     downloadbook(root.sons[1])
     temp = hashtable.search(root.sons[1].info["title"])
     print(temp.info["authors"])
-    delbook(root.sons[0])
+    delbook(temp)
     # app = QApplication(sys.argv)
     # MainWindow = QMainWindow()
     # ui = Ui_untitled.Ui_MainWindow()
