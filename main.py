@@ -8,10 +8,15 @@ import books_manage as manage
 import Ui_untitled
 
 def __init__(): # 程序初始化
+    if not os.path.exists("./data/booklist.json"):
+        f = open("./data/booklist.json", "wb")
+        f.close()
+
     root = manage.treenode(True, {"title":"root"}, [])
     with open("./data/booklist.json", "r", encoding='utf-8') as f: 
         filestr = f.read()
         if len(filestr): root.read_file(filestr)
+
     hashtable = manage.hash()
     hashtable.insert(root)
     hashtable.create_hashtable(root)
@@ -47,12 +52,12 @@ def search_online(keyword): # 运行在线搜索爬虫
     
 if __name__ == '__main__':
     root, hashtable = __init__()
-    search_online("python")
-    addbook(root)
-    root.sort("title")
-    downloadbook(root.sons[1])
-    temp = hashtable.search("Introduction to Machine Learning with Python: A Guide for Data Scientists")
-    print(temp.info["authors"])
+    # search_online("python")
+    # addbook(root)
+    # root.sort("title")
+    # downloadbook(root.sons[1])
+    # temp = hashtable.search("Introduction to Machine Learning with Python: A Guide for Data Scientists")
+    # print(temp.info["authors"])
     # delbook(root.sons[0])
     # app = QApplication(sys.argv)
     # MainWindow = QMainWindow()
