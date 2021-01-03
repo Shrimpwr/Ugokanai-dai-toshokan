@@ -41,8 +41,8 @@ class treenode: # 利用树形结构实现文件夹操作，支持创建，删�
 
 class hash:
     def __init__(self):
-        size = 10 # 生成在1000左右的随机质数
-        self.p = libnum.generate_prime(size, k=25)
+        size = 10 
+        self.p = libnum.generate_prime(size, k=25) # 生成在1000左右的随机质数
         self.list = []
 
     def calc_hash(self, item): # 计算哈希值
