@@ -40,9 +40,9 @@ if __name__ == '__main__':
     root, hashtable = __init__()
     addbook(root)
     root.sort("title")
-    # download.downloadfile(root.sons[0].info["link"], root.sons[0].info["title"])
-    # temp = hashtable.search("Introduction to Machine Learning with Python: A Guide for Data Scientists")
-    # print(temp.info["authors"])
+    download.downloadfile(root.sons[0].info["link"], root.sons[0].info["title"])
+    temp = hashtable.search("Introduction to Machine Learning with Python: A Guide for Data Scientists")
+    print(temp.info["authors"])
     
     # app = QApplication(sys.argv)
     # MainWindow = QMainWindow()
