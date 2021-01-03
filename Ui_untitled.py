@@ -1,6 +1,6 @@
 # -*- coding: utf-8 -*-
 
-# Form implementation generated from reading ui file 'c:\Users\Shrimpwr\Desktop\Study\软件开发课设\untitled.ui'
+# Form implementation generated from reading ui file 'c:\Users\Shrimpwr\Desktop\Study\softwaredev_course_design\source\untitled.ui'
 #
 # Created by: PyQt5 UI code generator 5.15.2
 #
@@ -14,25 +14,30 @@ from PyQt5 import QtCore, QtGui, QtWidgets
 class Ui_MainWindow(object):
     def setupUi(self, MainWindow):
         MainWindow.setObjectName("MainWindow")
-        MainWindow.resize(800, 600)
+        MainWindow.resize(953, 545)
         self.centralwidget = QtWidgets.QWidget(MainWindow)
+        self.centralwidget.setEnabled(True)
         self.centralwidget.setObjectName("centralwidget")
         MainWindow.setCentralWidget(self.centralwidget)
         self.menubar = QtWidgets.QMenuBar(MainWindow)
-        self.menubar.setGeometry(QtCore.QRect(0, 0, 800, 26))
+        self.menubar.setGeometry(QtCore.QRect(0, 0, 953, 26))
         self.menubar.setObjectName("menubar")
         self.menu = QtWidgets.QMenu(self.menubar)
         self.menu.setObjectName("menu")
+        self.menu_guanli = QtWidgets.QMenu(self.menubar)
+        self.menu_guanli.setObjectName("menu_guanli")
         MainWindow.setMenuBar(self.menubar)
         self.statusbar = QtWidgets.QStatusBar(MainWindow)
         self.statusbar.setObjectName("statusbar")
         MainWindow.setStatusBar(self.statusbar)
         self.menubar.addAction(self.menu.menuAction())
+        self.menubar.addAction(self.menu_guanli.menuAction())
 
         self.retranslateUi(MainWindow)
         QtCore.QMetaObject.connectSlotsByName(MainWindow)
 
     def retranslateUi(self, MainWindow):
         _translate = QtCore.QCoreApplication.translate
-        MainWindow.setWindowTitle(_translate("MainWindow", "MainWindow"))
-        self.menu.setTitle(_translate("MainWindow", "你好"))
+        MainWindow.setWindowTitle(_translate("MainWindow", "動かない大図書館"))
+        self.menu.setTitle(_translate("MainWindow", "在线搜索"))
+        self.menu_guanli.setTitle(_translate("MainWindow", "本地管理"))
