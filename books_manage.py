@@ -48,32 +48,34 @@ class hash:
     def calc_hash(self, item): # 计算哈希值
         src = item.info['title']
         temp = src.encode("utf-8")
-        i = int.from_bytes(temp, byteorder = 'little', signed = False) 
-        m = i % self.p
-        return m
+        value = int.from_bytes(temp, byteorder = 'little', signed = False) % self.p
+        return value
 
-    def create_hashtable(self, root): #传入root, 递归构造哈希表, 在同一地址使用列表避免冲突
+    def create_hashtable(self, root): # 初始化时调用，传入root, 递归构造哈希表
         for item in root.sons:
-            i = self.calc_hash(item)
-            l = len(self.list)
-            if i > l - 1:
-                for j in range (l, i + 1):
-                    if j == i:
-                        self.list.append([item])
-                    else:
-                        self.list.append([])
-            else:
-                self.list[i].append(item)
+            self.insert(item)
             if item.is_dir:
-                self.create_hashtable(item) # 递归到下一层
+                self.create_hashtable(item)
+
+    def insert(self, item): # 当书目中添加新书籍时调用，向哈希表中插入新项
+        hash_value = self.calc_hash(item)
+        length = len(self.list)
+        if hash_value > length - 1:
+            for j in range (length, hash_value + 1):
+                if j == hash_value:
+                    self.list.append([item])
+                else:
+                    self.list.append([])
+        else:
+            self.list[hash_value].append(item)
 
     def search(self, src):   # 精确查找，找到返回treenode，找不到返回-1
         temp = src.encode("utf-8")
         n = int.from_bytes(temp, byteorder = 'little', signed=False)
-        i = n % self.p
-        for each in self.list[i]:
-            if each['title'] == src:
-                return each
+        hash_value = n % self.p
+        for item in self.list[hash_value]:
+            if item.info['title'] == src:
+                return item
         return -1
 
 def qsort(items, key): # 使用快速排序算法将items内的元素按关键字key排序
