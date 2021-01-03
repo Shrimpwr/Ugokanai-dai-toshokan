@@ -71,13 +71,16 @@ class hash:
     def search(self, title):   # 查找，找到返回treenode，找不到返回-1
         title_bytes = title.encode("utf-8")
         hash_value = int.from_bytes(title_bytes, byteorder = 'little', signed=False) % self.p
+        length = len(self.list)
+        if hash_value > length - 1:
+            return -1
         for item in self.list[hash_value]:
             if item.info['title'] == title:
                 return item
         return -1
 
 def cmp(a, b, key):
-    if a.is_dir and b.is_dir:
+    if a.is_dir == True and b.is_dir == True:
         return a.info["title"] <= b.info["title"]
 
     elif a.is_dir == False and b.is_dir == False:
@@ -89,16 +92,17 @@ def cmp(a, b, key):
     else: # 一个是文件夹而一个是书籍的情况，默认将文件夹排在前面
         return a.is_dir
 
-def qsort(list, key): # 使用快速排序算法将items内的元素按关键字key排序
-    if len(list) > 1:
+def qsort(list, key): # 使用快速排序算法将list内的元素按关键字key排序
+    if len(list) >= 2:
         mid = list[len(list) // 2]
+        left = []
+        right = []
         list.remove(mid)
-        left = right = []
-        for i in list:
-            if cmp(i, mid, key):
-                left.append(i)
+        for item in list:
+            if cmp(item, mid, key):
+                left.append(item)
             else:
-                right.append(i)
+                right.append(item)
         return qsort(left, key) + [mid] + qsort(right, key)
     else:
         return list

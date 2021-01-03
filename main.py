@@ -39,7 +39,7 @@ def downloadbook(book):
 
 def delbook(book):
     dir = book.father
-    os.remove("./bookfiles/" + book.info["title"].replace(": ", "：") + book.info["file_type"])
+    os.remove("./bookfiles/" + book.info["title"].replace(": ", "：") + "." + book.info["file_type"])
     dir.remove(book)
 
 def search_online(keyword): # 运行在线搜索爬虫
@@ -47,16 +47,17 @@ def search_online(keyword): # 运行在线搜索爬虫
     
 if __name__ == '__main__':
     root, hashtable = __init__()
+    # search_online("python")
     # addbook(root)
     # root.sort("title")
-    # downloadbook(root.sons[0])
-    # temp = hashtable.search("Introduction to Machine Learning with Python: A Guide for Data Scientists")
-    # print(temp.info["authors"])
-    
-    app = QApplication(sys.argv)
-    MainWindow = QMainWindow()
-    ui = Ui_untitled.Ui_MainWindow()
-    ui.setupUi(MainWindow)
-    MainWindow.show()
-    sys.exit(app.exec_())
+    downloadbook(root.sons[0])
+    temp = hashtable.search("Introduction to Machine Learning with Python: A Guide for Data Scientists")
+    print(temp.info["authors"])
+    # delbook(root.sons[0])
+    # app = QApplication(sys.argv)
+    # MainWindow = QMainWindow()
+    # ui = Ui_untitled.Ui_MainWindow()
+    # ui.setupUi(MainWindow)
+    # MainWindow.show()
+    # sys.exit(app.exec_())
     __finish__()
