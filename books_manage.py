@@ -1,4 +1,5 @@
 import json
+import libnum
 
 class treenode: # 利用树形结构实现文件夹操作，支持创建，删除文件夹，以及文件夹内元素（书籍或文件夹）的插入、删除
     def __init__(self, is_dir, info, sons):
@@ -40,19 +41,20 @@ class treenode: # 利用树形结构实现文件夹操作，支持创建，删�
 
 class hash:
     def __init__(self):
+        size = 10 # 生成在1000左右的随机质数
+        self.p = libnum.generate_prime(size, k=25)
         self.list = []
-        self.p = 65537
 
-    def get_hash(self,item):
+    def calc_hash(self, item): # 计算哈希值
         src = item.info['title']
         temp = src.encode("utf-8")
-        i = int.from_bytes(temp, byteorder = 'little', signed = False)
+        i = int.from_bytes(temp, byteorder = 'little', signed = False) 
         m = i % self.p
         return m
 
     def create_hashtable(self, root): #传入root, 递归构造哈希表, 在同一地址使用列表避免冲突
         for item in root.sons:
-            i = self.get_hash(item)
+            i = self.calc_hash(item)
             l = len(self.list)
             if i > l - 1:
                 for j in range (l, i + 1):
@@ -65,7 +67,7 @@ class hash:
             if item.is_dir:
                 self.create_hashtable(item) # 递归到下一层
 
-    def search(self,src):   # 精确查找,找到返回treenode，找不到返回-1
+    def search(self, src):   # 精确查找，找到返回treenode，找不到返回-1
         temp = src.encode("utf-8")
         n = int.from_bytes(temp, byteorder = 'little', signed=False)
         i = n % self.p

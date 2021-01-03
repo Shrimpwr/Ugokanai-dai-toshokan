@@ -36,9 +36,9 @@ def getdlink(link):
 
 def downloadfile(link, name): # 利用wget从真实dlink下载书籍文件，正确命名并存放到bookfiles文件夹
     dlink, file_type = getdlink(link)
-    file_name = name + '.' + file_type
+    newname = name.replace(": ", "：")
+    file_name = newname + '.' + file_type
     path = './bookfiles/' + file_name
     wget.download(dlink, out = path)
 
-downloadfile("https://zh.1lib.org/book/3641986/812370", "Python Basics: A Self-Teaching Introduction")
-# 已知问题：标题中出现英文冒号和空格连在一起的情况会导致文件名被截断，下载的文件无法成功保存
+# 已知问题：windows文件名中不能含有英文冒号，否则下载的文件无法成功保存，解决方法是换成中文冒号。
