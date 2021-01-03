@@ -33,6 +33,15 @@ def addbook(dir): # 向目录中添加书籍
             dir.insert(newnode)
             hashtable.insert(newnode)
 
+def downloadbook(book):
+    file_type = download.downloadfile(book.info["link"], book.info["title"])
+    book.info["file_type"] = file_type
+
+def delbook(book):
+    dir = book.father
+    os.remove("./bookfiles/" + book.info["title"].replace(": ", "：") + book.info["file_type"])
+    dir.remove(book)
+
 def search_online(keyword): # 运行在线搜索爬虫
     os.system(r"search_spider.bat " + keyword)
     
@@ -40,7 +49,7 @@ if __name__ == '__main__':
     root, hashtable = __init__()
     # addbook(root)
     # root.sort("title")
-    # download.downloadfile(root.sons[0].info["link"], root.sons[0].info["title"])
+    # downloadbook(root.sons[0])
     # temp = hashtable.search("Introduction to Machine Learning with Python: A Guide for Data Scientists")
     # print(temp.info["authors"])
     

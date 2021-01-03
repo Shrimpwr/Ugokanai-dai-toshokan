@@ -40,5 +40,6 @@ def downloadfile(link, name): # 利用wget从真实dlink下载书籍文件，正
     file_name = newname + '.' + file_type
     path = './bookfiles/' + file_name
     wget.download(dlink, out = path)
+    return file_type
 
 # 已知问题：windows文件名中不能含有英文冒号，否则下载的文件无法成功保存，解决方法是换成中文冒号。
