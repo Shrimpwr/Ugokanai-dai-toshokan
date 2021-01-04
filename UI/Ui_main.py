@@ -14,14 +14,14 @@ from PyQt5 import QtCore, QtGui, QtWidgets
 class Ui_Form(object):
     def setupUi(self, Form):
         Form.setObjectName("Form")
-        Form.resize(829, 550)
+        Form.resize(1344, 846)
         self.frame = QtWidgets.QFrame(Form)
-        self.frame.setGeometry(QtCore.QRect(150, 0, 681, 551))
+        self.frame.setGeometry(QtCore.QRect(150, 0, 1191, 851))
         self.frame.setFrameShape(QtWidgets.QFrame.StyledPanel)
         self.frame.setFrameShadow(QtWidgets.QFrame.Raised)
         self.frame.setObjectName("frame")
         self.groupBox = QtWidgets.QGroupBox(Form)
-        self.groupBox.setGeometry(QtCore.QRect(0, -10, 151, 561))
+        self.groupBox.setGeometry(QtCore.QRect(0, -10, 151, 861))
         self.groupBox.setTitle("")
         self.groupBox.setObjectName("groupBox")
         self.btn_search = QtWidgets.QPushButton(self.groupBox)

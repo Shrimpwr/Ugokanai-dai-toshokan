@@ -14,7 +14,7 @@ from PyQt5 import QtCore, QtGui, QtWidgets
 class Ui_book_page(object):
     def setupUi(self, book_page):
         book_page.setObjectName("book_page")
-        book_page.resize(669, 545)
+        book_page.resize(1182, 842)
 
         self.retranslateUi(book_page)
         QtCore.QMetaObject.connectSlotsByName(book_page)

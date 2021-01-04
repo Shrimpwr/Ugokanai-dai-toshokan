@@ -1,17 +1,17 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <ui version="4.0">
- <class>book_page</class>
- <widget class="QWidget" name="book_page">
+ <class>result_page</class>
+ <widget class="QFrame" name="result_page">
   <property name="geometry">
    <rect>
     <x>0</x>
     <y>0</y>
-    <width>1182</width>
-    <height>842</height>
+    <width>1179</width>
+    <height>841</height>
    </rect>
   </property>
   <property name="windowTitle">
-   <string>Form</string>
+   <string>Frame</string>
   </property>
  </widget>
  <resources/>
