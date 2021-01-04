@@ -7,19 +7,15 @@ from UI.Ui_search_page import Ui_search_page
 from PyQt5.QtWidgets import QApplication, QMainWindow
 import sys
 
-
 class FrameBookPage(QWidget, Ui_book_page):
     def __init__(self):
         super().__init__()
         self.setupUi(self)
 
-
 class FrameSearchPage(QWidget, Ui_search_page):
     def __init__(self):
         super().__init__()
         self.setupUi(self)
-
-
 
 class MainWidget(QWidget, Ui_Form):
     """
@@ -42,6 +38,7 @@ class MainWidget(QWidget, Ui_Form):
     def controller(self):
         self.btn_manage.clicked.connect(self.switch)
         self.btn_search.clicked.connect(self.switch)
+        self.search.pushButton.clicked.connect(self.start_search) # 进行搜索
 
     def switch(self):
         sender = self.sender().objectName()
@@ -52,9 +49,7 @@ class MainWidget(QWidget, Ui_Form):
         }
 
         self.qsl.setCurrentIndex(index[sender])
-
-if __name__ == "__main__":
-    app = QApplication(sys.argv)
-    ui = MainWidget()
-    ui.show()
-    sys.exit(app.exec_())
+    
+    def start_search(self):
+        keyword = self.search.lineEdit.text()
+        search_online(keyword)
