@@ -5,7 +5,7 @@ from PyQt5.QtWidgets import QApplication, QMainWindow
 import download
 import json
 import books_manage as manage
-import Ui_untitled
+from UI.stacklayout import MainWidget
 
 def __init__(): # 程序初始化
     if not os.path.exists("./data/booklist.json"):
@@ -60,18 +60,16 @@ def search_online(keyword): # 运行在线搜索爬虫
     
 if __name__ == '__main__':
     root, hashtable = __init__()
-    search_online("python")
-    add_book(root)
-    root.sort("title")
-    download_book(root.sons[1])
-    temp = hashtable.search(root.sons[1].info["title"])
-    print(temp.info["authors"])
-    del_book(temp)
-    add_dir(root, "learning")
-    # app = QApplication(sys.argv)
-    # MainWindow = QMainWindow()
-    # ui = Ui_untitled.Ui_MainWindow()
-    # ui.setupUi(MainWindow)
-    # MainWindow.show()
-    # sys.exit(app.exec_())
-    __finish__()
+    # search_online("python")
+    # add_book(root)
+    # root.sort("title")
+    # download_book(root.sons[1])
+    # temp = hashtable.search(root.sons[1].info["title"])
+    # print(temp.info["authors"])
+    # del_book(temp)
+    # add_dir(root, "learning")
+    # __finish__()
+    app = QApplication(sys.argv)
+    ui = MainWidget()
+    ui.show()
+    sys.exit(app.exec_())
