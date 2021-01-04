@@ -8,6 +8,7 @@ import scrapy
 
 class zlibItem(scrapy.Item):
    title = scrapy.Field()
+   id = scrapy.Field()
    link  = scrapy.Field()
    coverlink_s = scrapy.Field()
    coverlink_l = scrapy.Field()

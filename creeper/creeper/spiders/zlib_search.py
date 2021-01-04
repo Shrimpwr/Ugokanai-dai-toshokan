@@ -25,6 +25,7 @@ class ZlibSpider(scrapy.Spider):
         for book in response.css('div.resItemBoxBooks'):
             item = zlibItem({
                 'title': book.css("h3 a::text").get(),
+                'id': int(book.css("h3 a::attr(href)").get().split("/")[2]),
                 'link' : "https://zh.1lib.org" + book.css("h3 a::attr(href)").get(),
                 'coverlink_s': ('https://zh.1lib.org/img/book-no-cover.png' if (book.css("div.itemCoverWrapper img::attr(src)").get() == 'img/book-no-cover.png' or book.css("div.itemCoverWrapper img::attr(data-src)").get() == '/img/cover-not-exists.png') else  book.css("div.itemCoverWrapper img::attr(data-src)").get()),
                 'coverlink_l': ('https://zh.1lib.org/img/book-no-cover.png' if (book.css("div.itemCoverWrapper img::attr(src)").get() == 'img/book-no-cover.png' or book.css("div.itemCoverWrapper img::attr(data-src)").get() == '/img/cover-not-exists.png') else ("https://covers.zlibcdn2.com/covers200/books" + book.css("div.itemCoverWrapper img::attr(data-src)").get()[43:])),

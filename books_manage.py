@@ -1,5 +1,7 @@
+import os
 import json
 import libnum
+import download
 
 class treenode: # 利用树形结构实现文件夹操作，支持创建，删除文件夹，以及文件夹内元素（书籍或文件夹）的插入、删除
     def __init__(self, is_dir, info, sons):
@@ -71,15 +73,27 @@ class hash:
         else:
             self.list[hash_value].append(item)
 
-    def search(self, title):   # 查找，找到返回treenode，找不到返回-1
+    def remove(self, item):
+        hash_value = self.calc_hash(item)
+        length = len(self.list)
+        if hash_value > length - 1:
+            return -1
+        for i in self.list[hash_value]:
+            if i == item:
+                self.list[hash_value].remove(item)
+
+    def search(self, title):   # 按标题精确查找，找到返回treenode，找不到返回-1
         title_bytes = title.encode("utf-8")
         hash_value = int.from_bytes(title_bytes, byteorder = 'little', signed=False) % self.p
         length = len(self.list)
         if hash_value > length - 1:
             return -1
+        items = []
         for item in self.list[hash_value]:
             if item.info['title'] == title:
-                return item
+                items.append(item)
+        if len(items) > 0:
+            return items
         return -1
 
 def cmp(a, b, key):
@@ -109,3 +123,62 @@ def qsort(list, key): # 使用快速排序算法将list内的元素按关键字k
         return qsort(left, key) + [mid] + qsort(right, key)
     else:
         return list
+
+def __init__(): # 程序初始化
+    if not os.path.exists("./data/booklist.json"):
+        f = open("./data/booklist.json", "wb")
+        f.close()
+
+    root = treenode(True, {"title":"root"}, [])
+    with open("./data/booklist.json", "r", encoding='utf-8') as f: 
+        filestr = f.read()
+        if len(filestr): root.read_file(filestr)
+
+    hashtable = hash()
+    hashtable.insert(root)
+    hashtable.create_table(root)
+    return root, hashtable
+
+def __finish__(root): # 程序退出，导出booklist文件
+    with open("./data/booklist.json", "w", encoding='utf-8') as f:
+        data = root.export_to_file()
+        f.write(json.dumps(obj=data,ensure_ascii=False))
+
+def add_book(dir, book, hashtable): # 向目录中添加书籍
+    temp = hashtable.search(book["title"])
+    if temp != -1:
+        for i in temp:
+            if i.info["id"] == book["id"]:
+                return -1
+    newbook = treenode(False, book, [])
+    dir.insert(newbook)
+    hashtable.insert(newbook)
+    
+def del_book(book, hashtable):
+    dir = book.father
+    if "file_type" in book.info:
+        os.remove("./bookfiles/" + book.info["title"].replace(": ", "：") + "." + book.info["file_type"])
+    hashtable.remove(book)
+    dir.remove(book)
+
+def add_dir(father_dir, title, hashtable):
+    temp = hashtable.search(title)
+    if temp != -1:
+        for i in temp: 
+            if i in father_dir.sons: # 同一个上级目录下不允许存在两个同名文件夹
+                return -1  
+    newdir = treenode(True, {"title":title}, [])
+    father_dir.insert(newdir)
+    hashtable.insert(newdir)
+
+def del_dir(father_dir, dir, hashtable):
+    if dir.father == father_dir:
+        hashtable.remove(dir)
+        father_dir.remove(dir)
+        
+def download_book(book):
+    file_type = download.downloadfile(book.info["link"], book.info["title"])
+    book.info["file_type"] = file_type
+
+def search_online(keyword): # 运行在线搜索爬虫
+    os.system(r"search_spider.bat " + keyword)
