@@ -20,6 +20,8 @@ class Ui_search_page(object):
         font = QtGui.QFont()
         font.setFamily("黑体")
         self.pushButton.setFont(font)
+        self.pushButton.setAutoDefault(False)
+        self.pushButton.setDefault(False)
         self.pushButton.setObjectName("pushButton")
         self.lineEdit = QtWidgets.QLineEdit(search_page)
         self.lineEdit.setGeometry(QtCore.QRect(60, 180, 541, 51))
