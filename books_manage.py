@@ -53,11 +53,11 @@ class hash:
         value = int.from_bytes(title_bytes, byteorder = 'little', signed = False) % self.p
         return value
 
-    def create_hashtable(self, root): # 初始化时调用，传入root, 递归构造哈希表
+    def create_table(self, root): # 初始化时调用，传入root, 递归构造哈希表
         for son in root.sons:
             self.insert(son)
             if son.is_dir:
-                self.create_hashtable(son)
+                self.create_table(son)
 
     def insert(self, item): # 当书目中添加新书籍时调用，向哈希表中插入新项
         hash_value = self.calc_hash(item)

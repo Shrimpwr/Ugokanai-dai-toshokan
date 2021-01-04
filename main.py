@@ -19,7 +19,7 @@ def __init__(): # 程序初始化
 
     hashtable = manage.hash()
     hashtable.insert(root)
-    hashtable.create_hashtable(root)
+    hashtable.create_table(root)
     return root, hashtable
 
 def __finish__(): # 程序退出，导出booklist文件
