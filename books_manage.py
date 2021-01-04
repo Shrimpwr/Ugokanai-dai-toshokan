@@ -44,7 +44,7 @@ class treenode: # 利用树形结构实现文件夹操作，支持创建，删�
     def sort(self, key):
         self.sons = qsort(self.sons, key)
 
-class hash:
+class hash: # hash表，支持从根目录直接创建整个表，或是在表中插入，移除单个元素（书籍或文件夹）
     def __init__(self): 
         self.p = libnum.generate_prime(size = 10, k=25) # 生成在1000左右的随机质数
         self.list = []
@@ -73,7 +73,7 @@ class hash:
         else:
             self.list[hash_value].append(item)
 
-    def remove(self, item):
+    def remove(self, item): # 从表中移除指定项
         hash_value = self.calc_hash(item)
         length = len(self.list)
         if hash_value > length - 1:
@@ -96,7 +96,7 @@ class hash:
             return items
         return -1
 
-def cmp(a, b, key):
+def cmp(a, b, key): # 快速排序使用的比较函数
     if a.is_dir == True and b.is_dir == True:
         return a.info["title"] <= b.info["title"]
 
@@ -124,7 +124,7 @@ def qsort(list, key): # 使用快速排序算法将list内的元素按关键字k
     else:
         return list
 
-def __init__(): # 程序初始化
+def __init__(): # 程序初始化，建立根目录与哈希表
     if not os.path.exists("./data/booklist.json"):
         f = open("./data/booklist.json", "wb")
         f.close()
@@ -154,14 +154,14 @@ def add_book(dir, book, hashtable): # 向目录中添加书籍
     dir.insert(newbook)
     hashtable.insert(newbook)
     
-def del_book(book, hashtable):
+def del_book(book, hashtable): # 删除指定书籍
     dir = book.father
     if "file_type" in book.info:
         os.remove("./bookfiles/" + book.info["title"].replace(": ", "：") + "." + book.info["file_type"])
     hashtable.remove(book)
     dir.remove(book)
 
-def add_dir(father_dir, title, hashtable):
+def add_dir(father_dir, title, hashtable): # 向指定上级目录中添加标题为title的新文件夹
     temp = hashtable.search(title)
     if temp != -1:
         for i in temp: 
@@ -171,12 +171,12 @@ def add_dir(father_dir, title, hashtable):
     father_dir.insert(newdir)
     hashtable.insert(newdir)
 
-def del_dir(father_dir, dir, hashtable):
+def del_dir(father_dir, dir, hashtable): # 从指定上级目录中删除指定文件夹
     if dir.father == father_dir:
         hashtable.remove(dir)
         father_dir.remove(dir)
         
-def download_book(book):
+def download_book(book): # 下载指定书籍
     file_type = download.downloadfile(book.info["link"], book.info["title"])
     book.info["file_type"] = file_type
 

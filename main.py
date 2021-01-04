@@ -3,18 +3,12 @@ import sys
 import json
 from PyQt5 import QtGui
 from PyQt5.QtWidgets import QApplication, QMainWindow, QStackedLayout, QWidget
-
-from books_manage import __init__, __finish__, add_book, add_dir, download_book, del_book, search_online, del_dir
-from UI.stacklayout import MainWidget
-
-
-
-# 导入生成的 ui
+# 导入UI
 from UI.Ui_main import Ui_Form
 from UI.Ui_book_page import Ui_book_page
 from UI.Ui_search_page import Ui_search_page
-from PyQt5.QtWidgets import QApplication, QMainWindow
-import sys
+# 导入功能模块
+from books_manage import __init__, __finish__, add_book, add_dir, download_book, del_book, search_online, del_dir
 
 class FrameBookPage(QWidget, Ui_book_page):
     def __init__(self):
@@ -27,9 +21,7 @@ class FrameSearchPage(QWidget, Ui_search_page):
         self.setupUi(self)
 
 class MainWidget(QWidget, Ui_Form):
-    """
-    主窗口
-    """
+    # 主窗口
     def __init__(self):
         super().__init__()
         self.setupUi(self)
@@ -74,7 +66,7 @@ if __name__ == '__main__':
     ui = MainWidget()
     ui.show()
     sys.exit(app.exec_())
-    
+
     # with open("./data/search_results.json", "r", encoding='utf-8') as f:
     #     results = json.load(f)
     #     for book in results:
