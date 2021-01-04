@@ -65,8 +65,7 @@ if __name__ == '__main__':
     app = QApplication(sys.argv)
     ui = MainWidget()
     ui.show()
-    sys.exit(app.exec_())
-
+    
     # with open("./data/search_results.json", "r", encoding='utf-8') as f:
     #     results = json.load(f)
     #     for book in results:
@@ -85,3 +84,5 @@ if __name__ == '__main__':
     # del_dir(root, root.sons[0], hashtable)
 
     # 以上功能需要与前端连接
+
+    sys.exit(app.exec_())
