@@ -57,4 +57,4 @@ class ZlibImagesPipeline(ImagesPipeline):
 
     def file_path(self, request, response=None, info=None, *,item=None):
         image_name = request.url[-36:]
-        return f'full/{image_name}'
+        return f'{image_name}'

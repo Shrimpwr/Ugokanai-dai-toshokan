@@ -8,7 +8,10 @@
 #     https://docs.scrapy.org/en/latest/topics/spider-middleware.html
 
 BOT_NAME = 'creeper'
-
+DOWNLOAD_DELAY = 0
+CONCURRENT_REQUESTS = 100
+CONCURRENT_REQUESTS_PER_DOMAIN = 100
+CONCURRENT_REQUESTS_PER_IP = 100
 SPIDER_MODULES = ['creeper.spiders']
 NEWSPIDER_MODULE = 'creeper.spiders'
 IMAGES_STORE = "../bookfiles/covers/normal_cover"

@@ -54,7 +54,7 @@ class FrameResultPage(QWidget, Ui_result_page):
             self.tableWidget.setCellWidget(i, 0, cover)
             cover.setAlignment(Qt.AlignCenter)
             if book["coverlink_s"] != 'https://zh.1lib.org/img/book-no-cover.png':
-                cover.setPixmap(QtGui.QPixmap("./bookfiles/covers/normal_cover/full/" + book["coverlink_s"][-36:]).scaled(100,150))
+                cover.setPixmap(QtGui.QPixmap("./bookfiles/covers/normal_cover/" + book["coverlink_s"][-36:]).scaled(100,150))
             else:
                 cover.setPixmap(QtGui.QPixmap("./bookfiles/covers/book-no-cover.png").scaled(100,150))
 
