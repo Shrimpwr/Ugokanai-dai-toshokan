@@ -32,13 +32,21 @@ class FrameResultPage(QWidget, Ui_result_page):
         super().__init__()
         self.setupUi(self)
         self.tableWidget.setSelectionBehavior(QAbstractItemView.SelectRows)
+        self.tableWidget.setEditTriggers(QAbstractItemView.NoEditTriggers)
         self.tableWidget.setShowGrid(False)
         self.tableWidget.horizontalHeader().setSectionResizeMode(QHeaderView.Fixed)
         self.tableWidget.setColumnWidth(0, 100)
         self.tableWidget.setColumnWidth(1, 500) 
-        self.tableWidget.setColumnWidth(2, 200)
+        self.tableWidget.setColumnWidth(2, 255)
         self.tableWidget.verticalHeader().setSectionResizeMode(QHeaderView.ResizeToContents)
-    
+        self.controller()
+
+    def controller(self):
+        self.btn_add2lib.clicked.connect(self.add2lib)
+
+    def add2lib(self):
+        pass
+
     def prepare(self): # 读取搜索结果并获取封面
         while self.tableWidget.rowCount() > 0:
             self.tableWidget.removeRow(0)
@@ -119,9 +127,9 @@ class MainWidget(QWidget, Ui_Form):
         msgBox = QMessageBox()
         msgBox.setWindowTitle('提示')
         msgBox.setIcon(QMessageBox.Information)
-        msgBox.setText('将要运行爬虫，基于当前网络情况，可能需要一段时间，按OK继续')
+        msgBox.setText('将要运行爬虫，基于当前网络情况，可能需要一段时间，请勿关闭程序，按OK继续')
         msgBox.exec()
-        # search_online(keyword)
+        search_online(keyword)
         self.sig.search_done.emit() # 发出信号让resultpage准备内容
         self.qsl.setCurrentIndex(2) # 搜索完成，跳转到search_result，展示搜索结果
     
