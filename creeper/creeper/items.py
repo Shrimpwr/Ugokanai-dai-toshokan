@@ -18,5 +18,9 @@ class dlinkItem(scrapy.Item):
    dlink = scrapy.Field()
    file_type = scrapy.Field()
 
+class coverItem(scrapy.Item):
+   image_urls = scrapy.Field()
+   images = scrapy.Field()
+
 
    

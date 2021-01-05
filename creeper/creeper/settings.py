@@ -11,7 +11,7 @@ BOT_NAME = 'creeper'
 
 SPIDER_MODULES = ['creeper.spiders']
 NEWSPIDER_MODULE = 'creeper.spiders'
-
+IMAGES_STORE = "../bookfiles/covers/normal_cover"
 
 # Crawl responsibly by identifying yourself (and your website) on the user-agent
 #USER_AGENT = 'creeper (+http://www.yourdomain.com)'
@@ -63,6 +63,7 @@ ROBOTSTXT_OBEY = True
 # Configure item pipelines
 # See https://docs.scrapy.org/en/latest/topics/item-pipeline.html
 ITEM_PIPELINES = {
+   'creeper.pipelines.images.ImagesPipeline': 301,
    'creeper.pipelines.Search_Pipeline': 300,
    'creeper.pipelines.Getdlink_Pipeline': 350
 }
@@ -87,3 +88,4 @@ ITEM_PIPELINES = {
 #HTTPCACHE_DIR = 'httpcache'
 #HTTPCACHE_IGNORE_HTTP_CODES = []
 #HTTPCACHE_STORAGE = 'scrapy.extensions.httpcache.FilesystemCacheStorage'
+
