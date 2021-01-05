@@ -1,6 +1,7 @@
 import os
 import sys
 import json
+import requests
 from PyQt5 import QtGui, QtWidgets
 from PyQt5.QtCore import Qt, QObject, pyqtSignal
 from PyQt5.QtWidgets import QApplication, QStackedLayout, QWidget, QTableWidgetItem, QHeaderView
@@ -38,11 +39,9 @@ class FrameResultPage(QWidget, Ui_result_page):
         self.tableWidget.setColumnWidth(2, 200)
         self.tableWidget.verticalHeader().setSectionResizeMode(QHeaderView.ResizeToContents)
 
-    def prepare(self):
+    def prepare(self): # 读取搜索结果并获取封面
         with open("./data/search_results.json", "r", encoding='utf-8') as f:
             self.resultlist = json.load(f)
-        for book in self.resultlist:
-            pass
         self.showTable(self.resultlist)
 
     def showTable(self, resultlist):
@@ -55,9 +54,15 @@ class FrameResultPage(QWidget, Ui_result_page):
             self.tableWidget.setCellWidget(i, 0, cover)
             cover.setAlignment(Qt.AlignCenter)
             if book["coverlink_s"] != 'https://zh.1lib.org/img/book-no-cover.png':
-                cover.setPixmap(QtGui.QPixmap("./bookfiles/covers/" + "https://covers.zlibcdn2.com/covers100/books/3d/f2/a0/3df2a0de6424a738e4cdbd41b537de28.jpg"[-36:]).scaled(100,150))
+                # cover_response = requests.get(book["coverlink_s"])
+                # cover_save = open("./bookfiles/covers/normal_cover/" + book["coverlink_s"][-36:], 'wb')
+                # cover_save.write(cover_response.content)
+                # cover_save.close()
+                # 这样下载过于暴力，速度极慢
+                cover.setPixmap(QtGui.QPixmap("./bookfiles/covers/normal_cover/" + book["coverlink_s"][-36:]).scaled(100,150))
             else:
                 cover.setPixmap(QtGui.QPixmap("./bookfiles/covers/book-no-cover.png").scaled(100,150))
+
             title_item = QTableWidgetItem(title)   
             title_item.setTextAlignment(Qt.AlignHCenter | Qt.AlignVCenter)       
             self.tableWidget.setItem(i, 1, title_item)
