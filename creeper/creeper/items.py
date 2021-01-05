@@ -21,6 +21,3 @@ class dlinkItem(scrapy.Item):
 class coverItem(scrapy.Item):
    image_urls = scrapy.Field()
    images = scrapy.Field()
-
-
-   
