@@ -5,6 +5,7 @@
 
 
 # useful for handling different item types with a single interface
+import os
 from creeper.items import coverItem, zlibItem
 from itemadapter import ItemAdapter
 from scrapy.exporters import JsonItemExporter
@@ -44,11 +45,16 @@ class Getdlink_Pipeline:
 class ZlibImagesPipeline(ImagesPipeline):
 
     def get_media_requests(self, item, info):
-        # 这个方法是在发送下载请求之前调用
-        # 其实这个方法本身就是去发送下载请求的
         if isinstance(item, coverItem):
             request_objs = super(ZlibImagesPipeline, self).get_media_requests(item, info)
-            # 将item数据加入到请求中
             for requests_obj in request_objs:
                 requests_obj.item = item
             return request_objs
+    
+    # def file_path(self, request, response=None, info=None, *, item=None):
+    #     image_guid = hashlib.sha1(to_bytes(request.url)).hexdigest()
+    #     return f'full/{image_guid}.jpg'
+
+    def file_path(self, request, response=None, info=None, *,item=None):
+        image_name = request.url[-36:]
+        return f'full/{image_name}'
