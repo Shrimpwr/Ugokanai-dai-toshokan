@@ -14,7 +14,23 @@ from PyQt5 import QtCore, QtGui, QtWidgets
 class Ui_result_page(object):
     def setupUi(self, result_page):
         result_page.setObjectName("result_page")
-        result_page.resize(1179, 841)
+        result_page.resize(1186, 841)
+        self.tableWidget = QtWidgets.QTableWidget(result_page)
+        self.tableWidget.setGeometry(QtCore.QRect(0, 0, 1031, 841))
+        self.tableWidget.setObjectName("tableWidget")
+        self.tableWidget.setColumnCount(3)
+        self.tableWidget.setRowCount(1)
+        item = QtWidgets.QTableWidgetItem()
+        self.tableWidget.setVerticalHeaderItem(0, item)
+        item = QtWidgets.QTableWidgetItem()
+        self.tableWidget.setHorizontalHeaderItem(0, item)
+        item = QtWidgets.QTableWidgetItem()
+        self.tableWidget.setHorizontalHeaderItem(1, item)
+        item = QtWidgets.QTableWidgetItem()
+        self.tableWidget.setHorizontalHeaderItem(2, item)
+        self.btn_add2lib = QtWidgets.QPushButton(result_page)
+        self.btn_add2lib.setGeometry(QtCore.QRect(1050, 400, 121, 41))
+        self.btn_add2lib.setObjectName("btn_add2lib")
 
         self.retranslateUi(result_page)
         QtCore.QMetaObject.connectSlotsByName(result_page)
@@ -22,3 +38,12 @@ class Ui_result_page(object):
     def retranslateUi(self, result_page):
         _translate = QtCore.QCoreApplication.translate
         result_page.setWindowTitle(_translate("result_page", "Frame"))
+        item = self.tableWidget.verticalHeaderItem(0)
+        item.setText(_translate("result_page", "新建行"))
+        item = self.tableWidget.horizontalHeaderItem(0)
+        item.setText(_translate("result_page", "Cover"))
+        item = self.tableWidget.horizontalHeaderItem(1)
+        item.setText(_translate("result_page", "Title"))
+        item = self.tableWidget.horizontalHeaderItem(2)
+        item.setText(_translate("result_page", "Authors"))
+        self.btn_add2lib.setText(_translate("result_page", "添加到本地"))

@@ -1,8 +1,10 @@
 import os
 import sys
 import json
-from PyQt5 import QtGui
-from PyQt5.QtWidgets import QApplication, QMainWindow, QStackedLayout, QWidget
+from PyQt5 import QtGui, QtWidgets
+from PyQt5.QtCore import Qt, QObject, pyqtSignal
+from PyQt5.QtWidgets import QApplication, QStackedLayout, QWidget, QTableWidgetItem, QHeaderView
+
 # 导入UI
 from UI.Ui_main import Ui_Form
 from UI.Ui_book_page import Ui_book_page
@@ -10,6 +12,9 @@ from UI.Ui_search_page import Ui_search_page
 from UI.Ui_result_page import Ui_result_page
 # 导入功能模块
 from books_manage import __init__, __finish__, add_book, add_dir, download_book, del_book, search_online, del_dir
+
+class Signal(QObject): # 自定义信号
+    search_done = pyqtSignal()
 
 class FrameBookPage(QWidget, Ui_book_page):
     def __init__(self):
@@ -25,6 +30,42 @@ class FrameResultPage(QWidget, Ui_result_page):
     def __init__(self):
         super().__init__()
         self.setupUi(self)
+        self.page = 0
+        self.tableWidget.setShowGrid(False)
+        self.tableWidget.horizontalHeader().setSectionResizeMode(QHeaderView.Fixed)
+        self.tableWidget.setColumnWidth(0, 100)
+        self.tableWidget.setColumnWidth(1, 500) 
+        self.tableWidget.setColumnWidth(2, 200)
+        self.tableWidget.verticalHeader().setSectionResizeMode(QHeaderView.ResizeToContents)
+
+    def prepare(self):
+        with open("./data/search_results.json", "r", encoding='utf-8') as f:
+            self.resultlist = json.load(f)
+        for book in self.resultlist:
+            pass
+        self.showTable(self.resultlist)
+
+    def showTable(self, resultlist):
+        for i, book in enumerate(resultlist):
+            title = book["title"]
+            authors = ",".join(book["authors"])
+            cover = QtWidgets.QLabel("")
+            self.tableWidget.insertRow(i)
+
+            self.tableWidget.setCellWidget(i, 0, cover)
+            cover.setAlignment(Qt.AlignCenter)
+            if book["coverlink_s"] != 'https://zh.1lib.org/img/book-no-cover.png':
+                cover.setPixmap(QtGui.QPixmap("./bookfiles/covers/" + "https://covers.zlibcdn2.com/covers100/books/3d/f2/a0/3df2a0de6424a738e4cdbd41b537de28.jpg"[-36:]).scaled(100,150))
+            else:
+                cover.setPixmap(QtGui.QPixmap("./bookfiles/covers/book-no-cover.png").scaled(100,150))
+            title_item = QTableWidgetItem(title)   
+            title_item.setTextAlignment(Qt.AlignHCenter | Qt.AlignVCenter)       
+            self.tableWidget.setItem(i, 1, title_item)
+
+            authors_item = QTableWidgetItem(authors)
+            authors_item.setTextAlignment(Qt.AlignHCenter | Qt.AlignVCenter)
+            self.tableWidget.setItem(i, 2, authors_item)
+    
 
 class MainWidget(QWidget, Ui_Form):
     # 主窗口
@@ -42,12 +83,14 @@ class MainWidget(QWidget, Ui_Form):
         self.qsl.addWidget(self.search)
         self.qsl.addWidget(self.result)
         # 控制函数
+        self.sig = Signal() 
         self.controller()
 
-    def controller(self): #将事件连接到下面的槽函数
+    def controller(self): #将事件连接到槽函数
         self.btn_manage.clicked.connect(self.switch)
         self.btn_search.clicked.connect(self.switch)
-        self.search.pushButton.clicked.connect(self.start_search) 
+        self.search.pushButton.clicked.connect(self.run_search)
+        self.sig.search_done.connect(self.result.prepare)
 
     def switch(self): #切换页面
         sender = self.sender().objectName()
@@ -59,9 +102,10 @@ class MainWidget(QWidget, Ui_Form):
 
         self.qsl.setCurrentIndex(index[sender])
     
-    def start_search(self): # 进行搜索
+    def run_search(self): # 进行搜索
         keyword = self.search.lineEdit.text()
-        search_online(keyword)
+        # search_online(keyword)
+        self.sig.search_done.emit() # 发出信号让resultpage准备内容
         self.qsl.setCurrentIndex(2) # 搜索完成，跳转到search_result，展示搜索结果
     
     def closeEvent(self, a0: QtGui.QCloseEvent) -> None: # 关闭时保存文件

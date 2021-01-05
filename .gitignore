@@ -3,3 +3,4 @@ bookfiles/*.epub
 data/*.json
 .vscode/
 __pycache__/
+bookfiles/covers/*.jpg
