@@ -42,6 +42,11 @@
      <string>Authors</string>
     </property>
    </column>
+   <column>
+    <property name="text">
+     <string>In Lib?</string>
+    </property>
+   </column>
   </widget>
   <widget class="QPushButton" name="btn_add2lib">
    <property name="geometry">

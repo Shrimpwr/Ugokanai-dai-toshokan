@@ -4,7 +4,7 @@ import json
 import requests
 from PyQt5 import QtGui, QtWidgets
 from PyQt5.QtCore import Qt, QObject, pyqtSignal
-from PyQt5.QtWidgets import QApplication, QStackedLayout, QWidget, QTableWidgetItem, QHeaderView
+from PyQt5.QtWidgets import QApplication, QStackedLayout, QWidget, QTableWidgetItem, QHeaderView, QMessageBox, QAbstractItemView
 
 # 导入UI
 from UI.Ui_main import Ui_Form
@@ -31,15 +31,17 @@ class FrameResultPage(QWidget, Ui_result_page):
     def __init__(self):
         super().__init__()
         self.setupUi(self)
-        self.page = 0
+        self.tableWidget.setSelectionBehavior(QAbstractItemView.SelectRows)
         self.tableWidget.setShowGrid(False)
         self.tableWidget.horizontalHeader().setSectionResizeMode(QHeaderView.Fixed)
         self.tableWidget.setColumnWidth(0, 100)
         self.tableWidget.setColumnWidth(1, 500) 
         self.tableWidget.setColumnWidth(2, 200)
         self.tableWidget.verticalHeader().setSectionResizeMode(QHeaderView.ResizeToContents)
-
+    
     def prepare(self): # 读取搜索结果并获取封面
+        while self.tableWidget.rowCount() > 0:
+            self.tableWidget.removeRow(0)
         with open("./data/search_results.json", "r", encoding='utf-8') as f:
             self.resultlist = json.load(f)
         self.showTable(self.resultlist)
@@ -49,6 +51,12 @@ class FrameResultPage(QWidget, Ui_result_page):
             title = book["title"]
             authors = ",".join(book["authors"])
             cover = QtWidgets.QLabel("")
+            inlib = False
+            local_have = hashtable.search(book["title"])
+            if local_have != -1:
+                for i in local_have:
+                    if i.info["id"] == book["id"]:
+                        inlib = True
             self.tableWidget.insertRow(i)
 
             self.tableWidget.setCellWidget(i, 0, cover)
@@ -56,7 +64,7 @@ class FrameResultPage(QWidget, Ui_result_page):
             if book["coverlink_s"] != 'https://zh.1lib.org/img/book-no-cover.png':
                 cover.setPixmap(QtGui.QPixmap("./bookfiles/covers/normal_cover/" + book["coverlink_s"][-36:]).scaled(100,150))
             else:
-                cover.setPixmap(QtGui.QPixmap("./bookfiles/covers/book-no-cover.png").scaled(100,150))
+                cover.setPixmap(QtGui.QPixmap("./bookfiles/covers/book-no-cover.png").scaled(100,140))
 
             title_item = QTableWidgetItem(title)   
             title_item.setTextAlignment(Qt.AlignHCenter | Qt.AlignVCenter)       
@@ -65,6 +73,10 @@ class FrameResultPage(QWidget, Ui_result_page):
             authors_item = QTableWidgetItem(authors)
             authors_item.setTextAlignment(Qt.AlignHCenter | Qt.AlignVCenter)
             self.tableWidget.setItem(i, 2, authors_item)
+
+            inlib_item = QTableWidgetItem(str(inlib))
+            inlib_item.setTextAlignment(Qt.AlignHCenter | Qt.AlignVCenter)
+            self.tableWidget.setItem(i, 3, inlib_item)
     
 
 class MainWidget(QWidget, Ui_Form):
@@ -104,7 +116,12 @@ class MainWidget(QWidget, Ui_Form):
     
     def run_search(self): # 进行搜索
         keyword = self.search.lineEdit.text()
-        search_online(keyword)
+        msgBox = QMessageBox()
+        msgBox.setWindowTitle('提示')
+        msgBox.setIcon(QMessageBox.Information)
+        msgBox.setText('将要运行爬虫，基于当前网络情况，可能需要一段时间，按OK继续')
+        msgBox.exec()
+        # search_online(keyword)
         self.sig.search_done.emit() # 发出信号让resultpage准备内容
         self.qsl.setCurrentIndex(2) # 搜索完成，跳转到search_result，展示搜索结果
     
