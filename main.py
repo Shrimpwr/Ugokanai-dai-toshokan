@@ -133,7 +133,6 @@ class FrameResultPage(QWidget, Ui_result_page):
         self.tableWidget.setSelectionBehavior(QAbstractItemView.SelectRows)
         self.tableWidget.setFocusPolicy(Qt.NoFocus)
         self.tableWidget.verticalHeader().hide()
-        # self.tableWidget.setStyleSheet("QTableWidget{outline:0px;}")
         self.tableWidget.setEditTriggers(QAbstractItemView.NoEditTriggers)
         self.tableWidget.setShowGrid(False)
         self.tableWidget.horizontalHeader().setSectionResizeMode(QHeaderView.Fixed)
@@ -141,23 +140,6 @@ class FrameResultPage(QWidget, Ui_result_page):
         self.tableWidget.setColumnWidth(1, 528) 
         self.tableWidget.setColumnWidth(2, 255)
         self.tableWidget.verticalHeader().setSectionResizeMode(QHeaderView.ResizeToContents)
-        # self.controller()
-
-    # def controller(self):
-    #     self.btn_add2lib.clicked.connect(self.selectDir)
-    #     self.btn_add2lib.clicked.connect(self.add2lib)
-
-    # def add2lib(self):
-    #     selections = self.tableWidget.selectionModel()
-    #     selectedsList = selections.selectedRows()
-    #     print(selectedsList)
-        
-    #     pass
-
-    # def selectDir(self):
-    #     self.btn_add2lib.hide()
-    #     self.btn_agree.show()
-    #     pass
 
     def prepare(self): # 读取搜索结果并获取封面
         while self.tableWidget.rowCount() > 0:
@@ -244,11 +226,20 @@ class MainWidget(QWidget, Ui_Form):
         msgBox.setIcon(QMessageBox.Information)
         msgBox.setText('将要运行爬虫，基于当前网络情况，可能需要一段时间，请勿关闭程序，按OK继续')
         msgBox.exec()
-        # search_online(keyword)
+        search_online(keyword)
         self.sig.search_done.emit() # 发出信号让resultpage准备内容
         self.qsl.setCurrentIndex(2) # 搜索完成，跳转到search_result，展示搜索结果
     
     def selectdir(self):
+        selections = self.result.tableWidget.selectionModel()
+        selectedsList = selections.selectedRows()
+        if len(selectedsList) == 0:
+            msgBox = QMessageBox()
+            msgBox.setWindowTitle('错误')
+            msgBox.setIcon(QMessageBox.Warning)
+            msgBox.setText('还没有选中图书！')
+            msgBox.exec()
+            return
         self.qsl.setCurrentIndex(0)
         self.book.coverlabel.hide()
         s = self.book.label.text()
