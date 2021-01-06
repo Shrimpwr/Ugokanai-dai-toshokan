@@ -118,7 +118,6 @@ class FrameBookPage(QWidget, Ui_book_page):
             table.setItem(0, 2, authors_item)
         pass
 
-
 class FrameSearchPage(QWidget, Ui_search_page):
     def __init__(self):
         super().__init__()
