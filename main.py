@@ -134,15 +134,9 @@ class FrameBookPage(QWidget, Ui_book_page):
         keyword = self.lineEdit.text()
         temp = hashtable.search(keyword)
         temp_dir = treenode(True, {"title": "search results"}, [])
-        if self.current_dir.info["title"] == "search results":
-            temp_dir.father = self.current_dir.father
-            self.current_dir = temp_dir
-        else:
-            temp_dir.father = self.current_dir
-            self.current_dir = temp_dir
-            s = self.label.text()
-            s += " > search results"
-            self.label.setText(s)
+        temp_dir.father = self.current_dir
+        self.current_dir = temp_dir
+        self.label.setText("search results")
         if temp != -1:
             for i in temp:
                 temp_dir.sons.append(i)
@@ -153,8 +147,16 @@ class FrameBookPage(QWidget, Ui_book_page):
     def doubleclk(self, row, column):
         if row == 0 and self.current_dir != root:
             s = self.label.text()
-            leng = len(self.current_dir.info["title"]) + 3
-            s = s[0:-leng]
+            if "search results" in s:
+                    s = ''
+                    fa = self.current_dir.father
+                    while fa != root:
+                        s = ' > ' + fa.info["title"] + s
+                        fa = fa.father
+                    s = 'root' + s
+            else:
+                leng = len(self.current_dir.info["title"]) + 3
+                s = s[0:-leng]
             self.label.setText(s)
             self.current_dir = self.current_dir.father
             self.show_dircontent(self.current_dir, self.tableWidget)
@@ -170,6 +172,7 @@ class FrameBookPage(QWidget, Ui_book_page):
                     fa = node.father
                     while fa != root:
                         s = ' > ' + fa.info["title"] + s
+                        fa = fa.father
                     s = 'root' + s
                 s += " > " + node.info["title"]
                 self.label.setText(s)
