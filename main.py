@@ -21,6 +21,7 @@ class FrameBookPage(QWidget, Ui_book_page):
     def __init__(self):
         super().__init__()
         self.setupUi(self)
+        self.tableWidget.verticalHeader().hide()
         self.current_dir = root
         self.tableWidget.setFocusPolicy(Qt.NoFocus)
         self.tableWidget.setSelectionBehavior(QAbstractItemView.SelectRows)
@@ -28,7 +29,7 @@ class FrameBookPage(QWidget, Ui_book_page):
         self.tableWidget.setShowGrid(False)
         self.tableWidget.horizontalHeader().setSectionResizeMode(QHeaderView.Fixed)
         self.tableWidget.setColumnWidth(0, 100)
-        self.tableWidget.setColumnWidth(1, 500) 
+        self.tableWidget.setColumnWidth(1, 528) 
         self.tableWidget.setColumnWidth(2, 260)
         self.tableWidget.verticalHeader().setSectionResizeMode(QHeaderView.ResizeToContents)
         font = QtGui.QFont()
@@ -36,44 +37,85 @@ class FrameBookPage(QWidget, Ui_book_page):
         font.setPointSize(10)
         self.label.setFont(font)
         self.label.setText("root")
-        self.show_dircontent(root)
+        self.show_dircontent(root, self.tableWidget)
         self.controller()
 
     def controller(self):
         self.tableWidget.cellDoubleClicked.connect(self.doubleclk)
+        self.tableWidget.cellClicked.connect(self.clk)
         pass
     
     @pyqtSlot(int, int)
     def doubleclk(self, row, column):
-        pass
+        if row == 0 and self.current_dir != root:
+            s = self.label.text()
+            leng = len(self.current_dir.info["title"]) + 3
+            s = s[0:-leng]
+            self.label.setText(s)
+            self.current_dir = self.current_dir.father
+            self.show_dircontent(self.current_dir, self.tableWidget)
+        else:
+            node = self.current_dir.sons[row]
+            if node.is_dir:
+                s = self.label.text()
+                s += " > " + node.info["title"]
+                self.label.setText(s)
+                self.current_dir = node
+                self.show_dircontent(self.current_dir, self.tableWidget)
 
-    def show_dircontent(self, dir):
-        while self.tableWidget.rowCount() > 0:
-            self.tableWidget.removeRow(0)
+    @pyqtSlot(int, int)
+    def clk(self, row, column):
+        if len(self.current_dir.sons) > row:
+            node = self.current_dir.sons[row]
+            cover_l = self.coverlabel
+            pass
+
+    def show_dircontent(self, dir, table):
+        while table.rowCount() > 0:
+            table.removeRow(0)
+        
         for i, node in enumerate(dir.sons):
             title = node.info["title"]
             cover = QtWidgets.QLabel("")
             if node.is_dir == False:
                 authors = ",".join(node.info["authors"])
                 if node.info["coverlink_s"] != 'https://zh.1lib.org/img/book-no-cover.png':
-                    cover.setPixmap(QtGui.QPixmap("./bookfiles/covers/normal_cover/" + node.info["coverlink_s"][-36:]).scaled(100,150))
+                    cover.setPixmap(QtGui.QPixmap("./bookfiles/covers/normal_cover/" + node.info["coverlink_s"][-36:]).scaled(80,115))
                 else:
-                    cover.setPixmap(QtGui.QPixmap("./bookfiles/covers/book-no-cover.png").scaled(100,140))
+                    cover.setPixmap(QtGui.QPixmap("./bookfiles/covers/book-no-cover.png").scaled(80,115))
             else:
-                cover.setPixmap(QtGui.QPixmap("./bookfiles/covers/folder.png").scaled(100,100))
+                cover.setPixmap(QtGui.QPixmap("./bookfiles/covers/folder.png").scaled(80,80))
                 authors = ''
             
-            self.tableWidget.insertRow(i)
-            self.tableWidget.setCellWidget(i, 0, cover)
+            table.insertRow(i)
+            table.setCellWidget(i, 0, cover)
             cover.setAlignment(Qt.AlignCenter)
             
             title_item = QTableWidgetItem(title)   
             title_item.setTextAlignment(Qt.AlignHCenter | Qt.AlignVCenter)       
-            self.tableWidget.setItem(i, 1, title_item)
+            table.setItem(i, 1, title_item)
 
             authors_item = QTableWidgetItem(authors)
             authors_item.setTextAlignment(Qt.AlignHCenter | Qt.AlignVCenter)
-            self.tableWidget.setItem(i, 2, authors_item)
+            table.setItem(i, 2, authors_item)
+
+        if dir != root:
+            table.insertRow(0)
+
+            cover = QtWidgets.QLabel("")
+            cover.setPixmap(QtGui.QPixmap("./bookfiles/covers/folder.png").scaled(80,80))
+            table.setCellWidget(0, 0, cover)
+            cover.setAlignment(Qt.AlignCenter)
+
+            title = "上级目录"
+            title_item = QTableWidgetItem(title)   
+            title_item.setTextAlignment(Qt.AlignHCenter | Qt.AlignVCenter)       
+            table.setItem(0, 1, title_item)
+
+            authors = ''
+            authors_item = QTableWidgetItem(authors)
+            authors_item.setTextAlignment(Qt.AlignHCenter | Qt.AlignVCenter)
+            table.setItem(0, 2, authors_item)
         pass
 
 
@@ -89,12 +131,13 @@ class FrameResultPage(QWidget, Ui_result_page):
         self.btn_agree.hide()
         self.tableWidget.setSelectionBehavior(QAbstractItemView.SelectRows)
         self.tableWidget.setFocusPolicy(Qt.NoFocus)
+        self.tableWidget.verticalHeader().hide()
         # self.tableWidget.setStyleSheet("QTableWidget{outline:0px;}")
         self.tableWidget.setEditTriggers(QAbstractItemView.NoEditTriggers)
         self.tableWidget.setShowGrid(False)
         self.tableWidget.horizontalHeader().setSectionResizeMode(QHeaderView.Fixed)
         self.tableWidget.setColumnWidth(0, 100)
-        self.tableWidget.setColumnWidth(1, 500) 
+        self.tableWidget.setColumnWidth(1, 528) 
         self.tableWidget.setColumnWidth(2, 255)
         self.tableWidget.verticalHeader().setSectionResizeMode(QHeaderView.ResizeToContents)
         self.controller()
@@ -138,9 +181,9 @@ class FrameResultPage(QWidget, Ui_result_page):
             self.tableWidget.setCellWidget(i, 0, cover)
             cover.setAlignment(Qt.AlignCenter)
             if book["coverlink_s"] != 'https://zh.1lib.org/img/book-no-cover.png':
-                cover.setPixmap(QtGui.QPixmap("./bookfiles/covers/normal_cover/" + book["coverlink_s"][-36:]).scaled(100,150))
+                cover.setPixmap(QtGui.QPixmap("./bookfiles/covers/normal_cover/" + book["coverlink_s"][-36:]).scaled(80,115))
             else:
-                cover.setPixmap(QtGui.QPixmap("./bookfiles/covers/book-no-cover.png").scaled(100,140))
+                cover.setPixmap(QtGui.QPixmap("./bookfiles/covers/book-no-cover.png").scaled(100,115))
 
             title_item = QTableWidgetItem(title)   
             title_item.setTextAlignment(Qt.AlignHCenter | Qt.AlignVCenter)       
