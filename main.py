@@ -23,6 +23,8 @@ class FrameBookPage(QWidget, Ui_book_page):
         self.setupUi(self)
         self.tableWidget.verticalHeader().hide()
         self.current_dir = root
+        self.btn_agree.hide()
+        self.btn_disagree.hide()
         self.tableWidget.setFocusPolicy(Qt.NoFocus)
         self.tableWidget.setSelectionBehavior(QAbstractItemView.SelectRows)
         self.tableWidget.setEditTriggers(QAbstractItemView.NoEditTriggers)
@@ -139,23 +141,23 @@ class FrameResultPage(QWidget, Ui_result_page):
         self.tableWidget.setColumnWidth(1, 528) 
         self.tableWidget.setColumnWidth(2, 255)
         self.tableWidget.verticalHeader().setSectionResizeMode(QHeaderView.ResizeToContents)
-        self.controller()
+        # self.controller()
 
-    def controller(self):
-        self.btn_add2lib.clicked.connect(self.selectDir)
-        self.btn_add2lib.clicked.connect(self.add2lib)
+    # def controller(self):
+    #     self.btn_add2lib.clicked.connect(self.selectDir)
+    #     self.btn_add2lib.clicked.connect(self.add2lib)
 
-    def add2lib(self):
-        selections = self.tableWidget.selectionModel()
-        selectedsList = selections.selectedRows()
-        print(selectedsList)
+    # def add2lib(self):
+    #     selections = self.tableWidget.selectionModel()
+    #     selectedsList = selections.selectedRows()
+    #     print(selectedsList)
         
-        pass
+    #     pass
 
-    def selectDir(self):
-        self.btn_add2lib.hide()
-        self.btn_agree.show()
-        pass
+    # def selectDir(self):
+    #     self.btn_add2lib.hide()
+    #     self.btn_agree.show()
+    #     pass
 
     def prepare(self): # 读取搜索结果并获取封面
         while self.tableWidget.rowCount() > 0:
@@ -172,8 +174,8 @@ class FrameResultPage(QWidget, Ui_result_page):
             inlib = False
             local_have = hashtable.search(book["title"])
             if local_have != -1:
-                for i in local_have:
-                    if i.info["id"] == book["id"]:
+                for j in local_have:
+                    if j.info["id"] == book["id"]:
                         inlib = True
             self.tableWidget.insertRow(i)
 
@@ -221,6 +223,9 @@ class MainWidget(QWidget, Ui_Form):
         self.btn_search.clicked.connect(self.switch)
         self.search.pushButton.clicked.connect(self.run_search)
         self.sig.search_done.connect(self.result.prepare)
+        self.result.btn_add2lib.clicked.connect(self.selectdir)
+        self.book.btn_agree.clicked.connect(self.confirm_add)
+        self.book.btn_disagree.clicked.connect(self.confirm_add)
 
     def switch(self): #切换页面
         sender = self.sender().objectName()
@@ -243,6 +248,34 @@ class MainWidget(QWidget, Ui_Form):
         self.sig.search_done.emit() # 发出信号让resultpage准备内容
         self.qsl.setCurrentIndex(2) # 搜索完成，跳转到search_result，展示搜索结果
     
+    def selectdir(self):
+        self.qsl.setCurrentIndex(0)
+        self.book.coverlabel.hide()
+        s = self.book.label.text()
+        s = "添加到：" + s
+        self.book.label.setText(s)
+        self.book.btn_download.hide()
+        self.book.btn_agree.show()
+        self.book.btn_disagree.show()
+        self.book.current_dir = root
+        self.book.show_dircontent(root, self.book.tableWidget)
+    
+    def confirm_add(self):
+        self.book.coverlabel.show()
+        s = self.book.label.text()
+        s = s[4:]
+        self.book.label.setText(s)
+        self.book.label.setText(s)
+        self.book.btn_agree.hide()
+        self.book.btn_disagree.hide()
+        self.book.btn_download.show()
+        if self.sender() == self.book.btn_agree:
+            selections = self.result.tableWidget.selectionModel()
+            selectedsList = selections.selectedRows()
+            for r in selectedsList:
+                add_book(self.book.current_dir, self.result.resultlist[r.row()], hashtable)
+            self.book.show_dircontent(self.book.current_dir, self.book.tableWidget)
+
     def closeEvent(self, a0: QtGui.QCloseEvent) -> None: # 关闭时保存文件
         super().closeEvent(a0)
         __finish__(root)
@@ -253,11 +286,6 @@ if __name__ == '__main__':
     app = QApplication(sys.argv)
     ui = MainWidget()
     ui.show()
-    
-    # with open("./data/search_results.json", "r", encoding='utf-8') as f:
-    #     results = json.load(f)
-    #     for book in results:
-    #         add_book(root, book, hashtable)
 
     # add_dir(root, "learning", hashtable)
 

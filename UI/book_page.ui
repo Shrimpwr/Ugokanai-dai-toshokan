@@ -77,7 +77,7 @@
     <string/>
    </property>
   </widget>
-  <widget class="QPushButton" name="DownloadButton">
+  <widget class="QPushButton" name="btn_download">
    <property name="geometry">
     <rect>
      <x>992</x>
@@ -88,6 +88,32 @@
    </property>
    <property name="text">
     <string>下载</string>
+   </property>
+  </widget>
+  <widget class="QPushButton" name="btn_agree">
+   <property name="geometry">
+    <rect>
+     <x>990</x>
+     <y>320</y>
+     <width>101</width>
+     <height>41</height>
+    </rect>
+   </property>
+   <property name="text">
+    <string>确定</string>
+   </property>
+  </widget>
+  <widget class="QPushButton" name="btn_disagree">
+   <property name="geometry">
+    <rect>
+     <x>990</x>
+     <y>410</y>
+     <width>101</width>
+     <height>41</height>
+    </rect>
+   </property>
+   <property name="text">
+    <string>取消</string>
    </property>
   </widget>
  </widget>
