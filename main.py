@@ -1,10 +1,12 @@
 import os
 import sys
 import json
+from tempfile import tempdir
 import requests
 from PyQt5 import QtGui, QtWidgets
 from PyQt5.QtCore import Qt, QObject, pyqtSignal, pyqtSlot
 from PyQt5.QtWidgets import QApplication, QStackedLayout, QWidget, QTableWidgetItem, QHeaderView, QMessageBox, QAbstractItemView
+from scrapy.selector.unified import SelectorList
 
 # 导入UI
 from UI.Ui_main import Ui_Form
@@ -12,7 +14,7 @@ from UI.Ui_book_page import Ui_book_page
 from UI.Ui_search_page import Ui_search_page
 from UI.Ui_result_page import Ui_result_page
 # 导入功能模块
-from books_manage import __init__, __finish__, add_book, add_dir, download_book, del_book, search_online, del_dir
+from books_manage import __init__, __finish__, add_book, add_dir, download_book, del_book, search_online, del_dir, treenode
 
 class Signal(QObject): # 自定义信号
     search_done = pyqtSignal()
@@ -27,6 +29,7 @@ class FrameBookPage(QWidget, Ui_book_page):
         self.btn_disagree.hide()
         self.tableWidget.setFocusPolicy(Qt.NoFocus)
         self.tableWidget.setSelectionBehavior(QAbstractItemView.SelectRows)
+        self.tableWidget.setSelectionMode(QAbstractItemView.SingleSelection)
         self.tableWidget.setEditTriggers(QAbstractItemView.NoEditTriggers)
         self.tableWidget.setShowGrid(False)
         self.tableWidget.horizontalHeader().setSectionResizeMode(QHeaderView.Fixed)
@@ -39,14 +42,57 @@ class FrameBookPage(QWidget, Ui_book_page):
         font.setPointSize(10)
         self.label.setFont(font)
         self.label.setText("root")
+        self.lab_proval.setText('')
+        self.btn_download.hide()
+        self.lineEdit.hide()
+        self.btn_back.hide()
+        self.btn_hashagree.hide()
         self.show_dircontent(root, self.tableWidget)
         self.controller()
 
     def controller(self):
         self.tableWidget.cellDoubleClicked.connect(self.doubleclk)
         self.tableWidget.cellClicked.connect(self.clk)
-        pass
+        self.btn_download.clicked.connect(self.downloadthis)
+        self.tableWidget.horizontalHeader().sectionClicked.connect(self.sort)
+        self.btn_hash.clicked.connect(self.pre_hashsearch)
+        self.btn_hashagree.clicked.connect(self.hashsearch)
+        self.btn_back.clicked.connect(self.after_hashsearch)
     
+    def pre_hashsearch(self):
+        self.btn_hash.hide()
+        self.lineEdit.show()
+        self.btn_hashagree.show()
+        self.btn_back.show()
+
+    def after_hashsearch(self, temp_dir = None):
+        self.btn_hash.show()
+        self.lineEdit.hide()
+        self.lineEdit.setText("")
+        self.btn_hashagree.hide()
+        self.btn_back.hide()
+        if temp_dir != None:
+            del temp_dir
+
+    def hashsearch(self):
+        keyword = self.lineEdit.text()
+        temp = hashtable.search(keyword)
+        temp_dir = treenode(True, {"title": "search results"}, [])
+        if self.current_dir.info["title"] == "search results":
+            temp_dir.father = self.current_dir.father
+            self.current_dir = temp_dir
+        else:
+            temp_dir.father = self.current_dir
+            self.current_dir = temp_dir
+            s = self.label.text()
+            s += " > search results"
+            self.label.setText(s)
+        if temp != -1:
+            for i in temp:
+                temp_dir.sons.append(i)
+        self.show_dircontent(temp_dir, self.tableWidget)
+        self.after_hashsearch(temp_dir)
+
     @pyqtSlot(int, int)
     def doubleclk(self, row, column):
         if row == 0 and self.current_dir != root:
@@ -56,7 +102,10 @@ class FrameBookPage(QWidget, Ui_book_page):
             self.label.setText(s)
             self.current_dir = self.current_dir.father
             self.show_dircontent(self.current_dir, self.tableWidget)
+
         else:
+            if self.current_dir != root and row > 0:
+                row = row - 1
             node = self.current_dir.sons[row]
             if node.is_dir:
                 s = self.label.text()
@@ -67,10 +116,40 @@ class FrameBookPage(QWidget, Ui_book_page):
 
     @pyqtSlot(int, int)
     def clk(self, row, column):
-        if len(self.current_dir.sons) > row:
-            node = self.current_dir.sons[row]
+        if row == 0 and self.current_dir != root:
+            self.btn_download.hide()
             cover_l = self.coverlabel
-            pass
+            cover_l.setPixmap(QtGui.QPixmap("./bookfiles/covers/folder.png").scaled(190,190))
+            self.lab_proval.setText('')
+        else:
+            if self.current_dir != root and row > 0:
+                row = row - 1
+            node = self.current_dir.sons[row]
+            if node.is_dir == False:
+                self.btn_download.show()
+                if "file_type" in node.info:
+                    self.btn_download.setText("已下载")
+                    self.btn_download.setEnabled(False)
+                else:
+                    self.btn_download.setText("下载")
+                    self.btn_download.setEnabled(True)
+                cover_l = self.coverlabel
+                cover_l.setPixmap(QtGui.QPixmap("./bookfiles/covers/local_cover/" + node.info["coverlink_l"][-36:]).scaled(190,280))
+                self.lab_proval.setText(node.info["property_value"])
+            else:
+                self.btn_download.hide()
+                cover_l = self.coverlabel
+                cover_l.setPixmap(QtGui.QPixmap("./bookfiles/covers/folder.png").scaled(190,190))
+                self.lab_proval.setText('')
+
+    @pyqtSlot(int)
+    def sort(self, column):
+        if column == 1:
+            self.current_dir.sort("title")
+            self.show_dircontent(self.current_dir, self.tableWidget)
+        if column == 2:
+            self.current_dir.sort("authors")
+            self.show_dircontent(self.current_dir, self.tableWidget)
 
     def show_dircontent(self, dir, table):
         while table.rowCount() > 0:
@@ -118,7 +197,14 @@ class FrameBookPage(QWidget, Ui_book_page):
             authors_item = QTableWidgetItem(authors)
             authors_item.setTextAlignment(Qt.AlignHCenter | Qt.AlignVCenter)
             table.setItem(0, 2, authors_item)
-        pass
+
+    def downloadthis(self):
+        selections = self.tableWidget.selectionModel()
+        selected = selections.selectedRows()[0]
+        num = selected.row()
+        if self.current_dir != root and num > 0:
+                num -= 1
+        download_book(self.current_dir.sons[num])
 
 class FrameSearchPage(QWidget, Ui_search_page):
     def __init__(self):
@@ -226,7 +312,7 @@ class MainWidget(QWidget, Ui_Form):
         msgBox.setIcon(QMessageBox.Information)
         msgBox.setText('将要运行爬虫，基于当前网络情况，可能需要一段时间，请勿关闭程序，按OK继续')
         msgBox.exec()
-        search_online(keyword)
+        # search_online(keyword)
         self.sig.search_done.emit() # 发出信号让resultpage准备内容
         self.qsl.setCurrentIndex(2) # 搜索完成，跳转到search_result，展示搜索结果
     
@@ -248,8 +334,7 @@ class MainWidget(QWidget, Ui_Form):
         self.book.btn_download.hide()
         self.book.btn_agree.show()
         self.book.btn_disagree.show()
-        self.book.current_dir = root
-        self.book.show_dircontent(root, self.book.tableWidget)
+        self.book.show_dircontent(self.book.current_dir, self.book.tableWidget)
     
     def confirm_add(self):
         self.book.coverlabel.show()
@@ -278,18 +363,11 @@ if __name__ == '__main__':
     ui = MainWidget()
     ui.show()
 
-    # add_dir(root, "learning", hashtable)
-
-    # root.sort("title")
-    
-    # download_book(root.sons[1])
-
-    # temp = hashtable.search(root.sons[1].info["title"])
+    # add_dir(root, "comic", hashtable)
 
     # del_book(temp[0], hashtable)
 
     # del_dir(root, root.sons[0], hashtable)
-
+    
     # 以上功能需要与前端连接
-
     sys.exit(app.exec_())

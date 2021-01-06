@@ -2,6 +2,7 @@ import os
 import json
 import libnum
 import download
+import wget
 
 class treenode: # 利用树形结构实现文件夹操作，支持创建，删除文件夹，以及文件夹内元素（书籍或文件夹）的插入、删除
     def __init__(self, is_dir, info, sons):
@@ -153,6 +154,8 @@ def add_book(dir, book, hashtable): # 向目录中添加书籍
     newbook = treenode(False, book, [])
     dir.insert(newbook)
     hashtable.insert(newbook)
+    path = "./bookfiles/covers/local_cover/" + book["coverlink_l"][-36:]
+    wget.download(book["coverlink_l"], out = path)
     
 def del_book(book, hashtable): # 删除指定书籍
     dir = book.father

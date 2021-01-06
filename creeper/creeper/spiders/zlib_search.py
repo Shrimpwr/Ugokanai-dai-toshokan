@@ -32,6 +32,7 @@ class ZlibSpider(scrapy.Spider):
                 'title': book.css("h3 a::text").get(),
                 'id': int(book.css("h3 a::attr(href)").get().split("/")[2]),
                 'link' : "https://zh.1lib.org" + book.css("h3 a::attr(href)").get(),
+                'property_value': book.css("div.property__file").css("div.property_value::text").get(),
                 'coverlink_s': coverlink_s,
                 'coverlink_l': ('https://zh.1lib.org/img/book-no-cover.png' if (book.css("div.itemCoverWrapper img::attr(src)").get() == 'img/book-no-cover.png' or book.css("div.itemCoverWrapper img::attr(data-src)").get() == '/img/cover-not-exists.png') else ("https://covers.zlibcdn2.com/covers200/books" + book.css("div.itemCoverWrapper img::attr(data-src)").get()[43:])),
                 'authors': book.css("div.authors a::text").getall(),

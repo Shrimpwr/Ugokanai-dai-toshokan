@@ -10,6 +10,7 @@ class zlibItem(scrapy.Item):
    title = scrapy.Field()
    id = scrapy.Field()
    link  = scrapy.Field()
+   property_value = scrapy.Field()
    coverlink_s = scrapy.Field()
    coverlink_l = scrapy.Field()
    authors = scrapy.Field()
