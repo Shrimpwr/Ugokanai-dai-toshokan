@@ -33,6 +33,9 @@ class Ui_result_page(object):
         self.btn_add2lib = QtWidgets.QPushButton(result_page)
         self.btn_add2lib.setGeometry(QtCore.QRect(1050, 400, 121, 41))
         self.btn_add2lib.setObjectName("btn_add2lib")
+        self.btn_agree = QtWidgets.QPushButton(result_page)
+        self.btn_agree.setGeometry(QtCore.QRect(1050, 400, 121, 41))
+        self.btn_agree.setObjectName("btn_agree")
 
         self.retranslateUi(result_page)
         QtCore.QMetaObject.connectSlotsByName(result_page)
@@ -51,3 +54,4 @@ class Ui_result_page(object):
         item = self.tableWidget.horizontalHeaderItem(3)
         item.setText(_translate("result_page", "In Lib?"))
         self.btn_add2lib.setText(_translate("result_page", "添加到本地"))
+        self.btn_agree.setText(_translate("result_page", "确定"))

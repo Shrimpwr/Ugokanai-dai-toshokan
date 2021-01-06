@@ -61,6 +61,19 @@
     <string>添加到本地</string>
    </property>
   </widget>
+  <widget class="QPushButton" name="btn_agree">
+   <property name="geometry">
+    <rect>
+     <x>1050</x>
+     <y>400</y>
+     <width>121</width>
+     <height>41</height>
+    </rect>
+   </property>
+   <property name="text">
+    <string>确定</string>
+   </property>
+  </widget>
  </widget>
  <resources/>
  <connections/>

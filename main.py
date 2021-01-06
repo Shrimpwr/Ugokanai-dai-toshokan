@@ -3,7 +3,7 @@ import sys
 import json
 import requests
 from PyQt5 import QtGui, QtWidgets
-from PyQt5.QtCore import Qt, QObject, pyqtSignal
+from PyQt5.QtCore import Qt, QObject, pyqtSignal, pyqtSlot
 from PyQt5.QtWidgets import QApplication, QStackedLayout, QWidget, QTableWidgetItem, QHeaderView, QMessageBox, QAbstractItemView
 
 # 导入UI
@@ -21,6 +21,61 @@ class FrameBookPage(QWidget, Ui_book_page):
     def __init__(self):
         super().__init__()
         self.setupUi(self)
+        self.current_dir = root
+        self.tableWidget.setFocusPolicy(Qt.NoFocus)
+        self.tableWidget.setSelectionBehavior(QAbstractItemView.SelectRows)
+        self.tableWidget.setEditTriggers(QAbstractItemView.NoEditTriggers)
+        self.tableWidget.setShowGrid(False)
+        self.tableWidget.horizontalHeader().setSectionResizeMode(QHeaderView.Fixed)
+        self.tableWidget.setColumnWidth(0, 100)
+        self.tableWidget.setColumnWidth(1, 500) 
+        self.tableWidget.setColumnWidth(2, 260)
+        self.tableWidget.verticalHeader().setSectionResizeMode(QHeaderView.ResizeToContents)
+        font = QtGui.QFont()
+        font.setFamily("微软雅黑")
+        font.setPointSize(10)
+        self.label.setFont(font)
+        self.label.setText("root")
+        self.show_dircontent(root)
+        self.controller()
+
+    def controller(self):
+        self.tableWidget.cellDoubleClicked.connect(self.doubleclk)
+        pass
+    
+    @pyqtSlot(int, int)
+    def doubleclk(self, row, column):
+        pass
+
+    def show_dircontent(self, dir):
+        while self.tableWidget.rowCount() > 0:
+            self.tableWidget.removeRow(0)
+        for i, node in enumerate(dir.sons):
+            title = node.info["title"]
+            cover = QtWidgets.QLabel("")
+            if node.is_dir == False:
+                authors = ",".join(node.info["authors"])
+                if node.info["coverlink_s"] != 'https://zh.1lib.org/img/book-no-cover.png':
+                    cover.setPixmap(QtGui.QPixmap("./bookfiles/covers/normal_cover/" + node.info["coverlink_s"][-36:]).scaled(100,150))
+                else:
+                    cover.setPixmap(QtGui.QPixmap("./bookfiles/covers/book-no-cover.png").scaled(100,140))
+            else:
+                cover.setPixmap(QtGui.QPixmap("./bookfiles/covers/folder.png").scaled(100,100))
+                authors = ''
+            
+            self.tableWidget.insertRow(i)
+            self.tableWidget.setCellWidget(i, 0, cover)
+            cover.setAlignment(Qt.AlignCenter)
+            
+            title_item = QTableWidgetItem(title)   
+            title_item.setTextAlignment(Qt.AlignHCenter | Qt.AlignVCenter)       
+            self.tableWidget.setItem(i, 1, title_item)
+
+            authors_item = QTableWidgetItem(authors)
+            authors_item.setTextAlignment(Qt.AlignHCenter | Qt.AlignVCenter)
+            self.tableWidget.setItem(i, 2, authors_item)
+        pass
+
 
 class FrameSearchPage(QWidget, Ui_search_page):
     def __init__(self):
@@ -31,7 +86,10 @@ class FrameResultPage(QWidget, Ui_result_page):
     def __init__(self):
         super().__init__()
         self.setupUi(self)
+        self.btn_agree.hide()
         self.tableWidget.setSelectionBehavior(QAbstractItemView.SelectRows)
+        self.tableWidget.setFocusPolicy(Qt.NoFocus)
+        # self.tableWidget.setStyleSheet("QTableWidget{outline:0px;}")
         self.tableWidget.setEditTriggers(QAbstractItemView.NoEditTriggers)
         self.tableWidget.setShowGrid(False)
         self.tableWidget.horizontalHeader().setSectionResizeMode(QHeaderView.Fixed)
@@ -42,9 +100,19 @@ class FrameResultPage(QWidget, Ui_result_page):
         self.controller()
 
     def controller(self):
+        self.btn_add2lib.clicked.connect(self.selectDir)
         self.btn_add2lib.clicked.connect(self.add2lib)
 
     def add2lib(self):
+        selections = self.tableWidget.selectionModel()
+        selectedsList = selections.selectedRows()
+        print(selectedsList)
+        
+        pass
+
+    def selectDir(self):
+        self.btn_add2lib.hide()
+        self.btn_agree.show()
         pass
 
     def prepare(self): # 读取搜索结果并获取封面
@@ -86,7 +154,6 @@ class FrameResultPage(QWidget, Ui_result_page):
             inlib_item.setTextAlignment(Qt.AlignHCenter | Qt.AlignVCenter)
             self.tableWidget.setItem(i, 3, inlib_item)
     
-
 class MainWidget(QWidget, Ui_Form):
     # 主窗口
     def __init__(self):
@@ -94,6 +161,7 @@ class MainWidget(QWidget, Ui_Form):
         self.setupUi(self)
         # 实例化一个堆叠布局
         self.qsl = QStackedLayout(self.frame)
+        self.groupBox.setStyleSheet("border:0px")
         # 实例化分页面
         self.book = FrameBookPage()
         self.search = FrameSearchPage()
@@ -129,7 +197,7 @@ class MainWidget(QWidget, Ui_Form):
         msgBox.setIcon(QMessageBox.Information)
         msgBox.setText('将要运行爬虫，基于当前网络情况，可能需要一段时间，请勿关闭程序，按OK继续')
         msgBox.exec()
-        search_online(keyword)
+        # search_online(keyword)
         self.sig.search_done.emit() # 发出信号让resultpage准备内容
         self.qsl.setCurrentIndex(2) # 搜索完成，跳转到search_result，展示搜索结果
     
