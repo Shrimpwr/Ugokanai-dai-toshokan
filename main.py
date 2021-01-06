@@ -5,7 +5,7 @@ from tempfile import tempdir
 import requests
 from PyQt5 import QtGui, QtWidgets
 from PyQt5.QtCore import Qt, QObject, pyqtSignal, pyqtSlot
-from PyQt5.QtWidgets import QApplication, QStackedLayout, QWidget, QTableWidgetItem, QHeaderView, QMessageBox, QAbstractItemView
+from PyQt5.QtWidgets import QApplication, QStackedLayout, QWidget, QTableWidgetItem, QHeaderView, QMessageBox, QAbstractItemView, QMenu, QInputDialog
 from scrapy.selector.unified import SelectorList
 
 # 导入UI
@@ -47,6 +47,7 @@ class FrameBookPage(QWidget, Ui_book_page):
         self.lineEdit.hide()
         self.btn_back.hide()
         self.btn_hashagree.hide()
+        self.tableWidget.setContextMenuPolicy(Qt.CustomContextMenu) 
         self.show_dircontent(root, self.tableWidget)
         self.controller()
 
@@ -58,7 +59,62 @@ class FrameBookPage(QWidget, Ui_book_page):
         self.btn_hash.clicked.connect(self.pre_hashsearch)
         self.btn_hashagree.clicked.connect(self.hashsearch)
         self.btn_back.clicked.connect(self.after_hashsearch)
+        self.tableWidget.customContextMenuRequested.connect(self.showContextMenu)
     
+    def showContextMenu(self, pos):  # 创建右键菜单
+        self.tableWidget.contextMenu = QMenu(self)
+        self.actionA = self.tableWidget.contextMenu.addAction(u'创建文件夹')
+        self.actionB = self.tableWidget.contextMenu.addAction(u'删除')
+        self.tableWidget.contextMenu.popup(QtGui.QCursor.pos()) 
+        self.actionA.triggered.connect(self.create_dir)
+        self.actionB.triggered.connect(self.delete_item)
+        self.tableWidget.contextMenu.show()
+
+    def create_dir(self):
+        text, ok = QInputDialog.getText(self, '创建文件夹', '请输入文件夹名:')
+        if ok:
+            msg = add_dir(self.current_dir, text, hashtable)
+            if msg == -1:
+                msgBox = QMessageBox()
+                msgBox.setWindowTitle('错误')
+                msgBox.setIcon(QMessageBox.Warning)
+                msgBox.setText('添加错误，请检查文件夹是否重名！')
+                msgBox.exec()
+            else:
+                self.show_dircontent(self.current_dir, self.tableWidget)
+
+    def delete_item(self):
+        selections = self.tableWidget.selectionModel()
+        selectedsList = selections.selectedRows()
+        msgBox = QMessageBox()
+        msgBox.setWindowTitle('错误')
+        msgBox.setIcon(QMessageBox.Warning)
+        if len(selectedsList) == 0:
+            msgBox.setText('还没有选中要删除的项目！')
+            msgBox.exec()
+            return
+        selected = selectedsList[0]
+        num = selected.row()
+        if (self.current_dir != root and num == 0):
+            msgBox.setText('不能删除上级文件夹！')
+            msgBox.exec()
+            return
+        if self.current_dir != root and num > 0:
+            num -= 1
+        item = self.current_dir.sons[num]
+        if item.is_dir == False:
+            del_book(item, hashtable)
+            self.show_dircontent(self.current_dir, self.tableWidget)
+            return
+        else:
+            if len(item.sons) > 0:
+                msgBox.setText('不能删除非空文件夹！')
+                msgBox.exec()
+            else:
+                del_dir(self.current_dir, item, hashtable)
+                self.show_dircontent(self.current_dir, self.tableWidget)
+                return
+
     def pre_hashsearch(self):
         self.btn_hash.hide()
         self.lineEdit.show()
@@ -109,6 +165,12 @@ class FrameBookPage(QWidget, Ui_book_page):
             node = self.current_dir.sons[row]
             if node.is_dir:
                 s = self.label.text()
+                if "search results" in s:
+                    s = ''
+                    fa = node.father
+                    while fa != root:
+                        s = ' > ' + fa.info["title"] + s
+                    s = 'root' + s
                 s += " > " + node.info["title"]
                 self.label.setText(s)
                 self.current_dir = node
