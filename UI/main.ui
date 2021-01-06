@@ -52,8 +52,8 @@
     </property>
     <property name="font">
      <font>
-      <family>黑体</family>
-      <pointsize>10</pointsize>
+      <family>微软雅黑</family>
+      <pointsize>11</pointsize>
      </font>
     </property>
     <property name="text">
@@ -71,8 +71,8 @@
     </property>
     <property name="font">
      <font>
-      <family>黑体</family>
-      <pointsize>10</pointsize>
+      <family>微软雅黑</family>
+      <pointsize>11</pointsize>
      </font>
     </property>
     <property name="text">
