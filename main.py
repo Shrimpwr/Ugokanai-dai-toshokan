@@ -191,16 +191,17 @@ class FrameBookPage(QWidget, Ui_book_page):
                 row = row - 1
             node = self.current_dir.sons[row]
             if node.is_dir == False:
-                self.btn_download.show()
-                if "file_type" in node.info:
-                    self.btn_download.setText("已下载")
-                    self.btn_download.setEnabled(False)
-                else:
-                    self.btn_download.setText("下载")
-                    self.btn_download.setEnabled(True)
-                cover_l = self.coverlabel
-                cover_l.setPixmap(QtGui.QPixmap("./bookfiles/covers/local_cover/" + node.info["coverlink_l"][-36:]).scaled(190,280))
-                self.lab_proval.setText(node.info["property_value"])
+                if self.btn_agree.isHidden():
+                    self.btn_download.show()
+                    if "file_type" in node.info:
+                        self.btn_download.setText("已下载")
+                        self.btn_download.setEnabled(False)
+                    else:
+                        self.btn_download.setText("下载")
+                        self.btn_download.setEnabled(True)
+                    cover_l = self.coverlabel
+                    cover_l.setPixmap(QtGui.QPixmap("./bookfiles/covers/local_cover/" + node.info["coverlink_l"][-36:]).scaled(190,280))
+                    self.lab_proval.setText(node.info["property_value"])
             else:
                 self.btn_download.hide()
                 cover_l = self.coverlabel
@@ -384,6 +385,9 @@ class MainWidget(QWidget, Ui_Form):
         self.qsl.setCurrentIndex(2) # 搜索完成，跳转到search_result，展示搜索结果
     
     def selectdir(self):
+        self.book.btn_hash.hide()
+        self.book.lab_proval.hide()
+        self.book.btn_download.hide()
         selections = self.result.tableWidget.selectionModel()
         selectedsList = selections.selectedRows()
         if len(selectedsList) == 0:
@@ -412,6 +416,8 @@ class MainWidget(QWidget, Ui_Form):
         self.book.btn_agree.hide()
         self.book.btn_disagree.hide()
         self.book.btn_download.show()
+        self.book.btn_hash.show()
+        self.book.lab_proval.show()
         if self.sender() == self.book.btn_agree:
             selections = self.result.tableWidget.selectionModel()
             selectedsList = selections.selectedRows()

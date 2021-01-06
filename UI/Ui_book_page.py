@@ -118,5 +118,5 @@ class Ui_book_page(object):
         self.btn_disagree.setText(_translate("book_page", "取消"))
         self.lab_proval.setText(_translate("book_page", "TextLabel"))
         self.btn_hash.setText(_translate("book_page", "查找"))
-        self.btn_back.setText(_translate("book_page", "返回"))
+        self.btn_back.setText(_translate("book_page", "取消"))
         self.btn_hashagree.setText(_translate("book_page", "确定"))

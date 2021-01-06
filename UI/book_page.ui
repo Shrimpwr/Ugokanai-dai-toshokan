@@ -188,7 +188,7 @@
     </font>
    </property>
    <property name="text">
-    <string>返回</string>
+    <string>取消</string>
    </property>
   </widget>
   <widget class="QLineEdit" name="lineEdit">
