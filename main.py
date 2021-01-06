@@ -429,12 +429,4 @@ if __name__ == '__main__':
     app = QApplication(sys.argv)
     ui = MainWidget()
     ui.show()
-
-    # add_dir(root, "comic", hashtable)
-
-    # del_book(temp[0], hashtable)
-
-    # del_dir(root, root.sons[0], hashtable)
-    
-    # 以上功能需要与前端连接
     sys.exit(app.exec_())
