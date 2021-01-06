@@ -5,6 +5,6 @@ data/*.json
 __pycache__/
 bookfiles/covers/normal_cover/*.jpg
 bookfiles/covers/normal_cover/*.png
-
+bookfiles/covers/normal_cover/*.gif
 bookfiles/covers/local_cover/*.jpg
 bookfiles/covers/local_cover/*.png
