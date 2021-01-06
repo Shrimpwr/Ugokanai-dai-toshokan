@@ -205,6 +205,8 @@ class FrameBookPage(QWidget, Ui_book_page):
         if self.current_dir != root and num > 0:
                 num -= 1
         download_book(self.current_dir.sons[num])
+        self.btn_download.setText("已下载")
+        self.btn_download.setEnabled(False)
 
 class FrameSearchPage(QWidget, Ui_search_page):
     def __init__(self):
