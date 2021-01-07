@@ -276,6 +276,11 @@ class FrameBookPage(QWidget, Ui_book_page):
         download_book(self.current_dir.sons[num])
         self.btn_download.setText("已下载")
         self.btn_download.setEnabled(False)
+        msgBox = QMessageBox()
+        msgBox.setWindowTitle('提示')
+        msgBox.setIcon(QMessageBox.Information)
+        msgBox.setText('下载完成！')
+        msgBox.exec()
 
 class FrameSearchPage(QWidget, Ui_search_page):
     def __init__(self):
@@ -336,7 +341,13 @@ class FrameResultPage(QWidget, Ui_result_page):
             inlib_item = QTableWidgetItem(str(inlib))
             inlib_item.setTextAlignment(Qt.AlignHCenter | Qt.AlignVCenter)
             self.tableWidget.setItem(i, 3, inlib_item)
-    
+
+        msgBox = QMessageBox()
+        msgBox.setWindowTitle('提示')
+        msgBox.setIcon(QMessageBox.Information)
+        msgBox.setText('搜索完成！')
+        msgBox.exec()
+
 class MainWidget(QWidget, Ui_Form):
     # 主窗口
     def __init__(self):
@@ -443,6 +454,11 @@ class MainWidget(QWidget, Ui_Form):
             for r in selectedsList:
                 add_book(self.book.current_dir, self.result.resultlist[r.row()], hashtable)
             self.book.show_dircontent(self.book.current_dir, self.book.tableWidget)
+            msgBox = QMessageBox()
+            msgBox.setWindowTitle('提示')
+            msgBox.setIcon(QMessageBox.Information)
+            msgBox.setText('添加完成！')
+            msgBox.exec()
 
     def closeEvent(self, a0: QtGui.QCloseEvent) -> None: # 关闭时保存文件
         super().closeEvent(a0)
