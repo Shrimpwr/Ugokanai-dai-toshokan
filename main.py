@@ -200,7 +200,10 @@ class FrameBookPage(QWidget, Ui_book_page):
                         self.btn_download.setText("下载")
                         self.btn_download.setEnabled(True)
                     cover_l = self.coverlabel
-                    cover_l.setPixmap(QtGui.QPixmap("./bookfiles/covers/local_cover/" + node.info["coverlink_l"][-36:]).scaled(190,280))
+                    if node.info["coverlink_l"] != "https://zh.1lib.org/img/book-no-cover.png":
+                        cover_l.setPixmap(QtGui.QPixmap("./bookfiles/covers/local_cover/" + node.info["coverlink_l"][-36:]).scaled(190,280))
+                    else:
+                        cover_l.setPixmap(QtGui.QPixmap("./bookfiles/covers/book-no-cover.png").scaled(190,280))
                     self.lab_proval.setText(node.info["property_value"])
             else:
                 self.btn_download.hide()
@@ -380,7 +383,7 @@ class MainWidget(QWidget, Ui_Form):
         msgBox.setIcon(QMessageBox.Information)
         msgBox.setText('将要运行爬虫，基于当前网络情况，可能需要一段时间，请勿关闭程序，按OK继续')
         msgBox.exec()
-        # search_online(keyword)
+        search_online(keyword)
         self.sig.search_done.emit() # 发出信号让resultpage准备内容
         self.qsl.setCurrentIndex(2) # 搜索完成，跳转到search_result，展示搜索结果
     

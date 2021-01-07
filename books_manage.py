@@ -154,8 +154,9 @@ def add_book(dir, book, hashtable): # 向目录中添加书籍
     newbook = treenode(False, book, [])
     dir.insert(newbook)
     hashtable.insert(newbook)
-    path = "./bookfiles/covers/local_cover/" + book["coverlink_l"][-36:]
-    wget.download(book["coverlink_l"], out = path)
+    if book["coverlink_l"] != "https://zh.1lib.org/img/book-no-cover.png":    
+        path = "./bookfiles/covers/local_cover/" + book["coverlink_l"][-36:]
+        wget.download(book["coverlink_l"], out = path)
     
 def del_book(book, hashtable): # 删除指定书籍
     dir = book.father
