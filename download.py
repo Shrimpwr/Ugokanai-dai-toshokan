@@ -45,7 +45,7 @@ def downloadfile(link, name): # 利用wget从真实dlink下载书籍文件，正
     }   
     res = requests.get(dlink, cookies = COOKIES)
     with open(path, 'wb') as f:
-            f.write(res.content)
+        f.write(res.content)
     # wget.download(dlink, out = path)
     return file_type
 
