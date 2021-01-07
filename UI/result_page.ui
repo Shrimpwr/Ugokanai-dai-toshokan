@@ -7,7 +7,7 @@
     <x>0</x>
     <y>0</y>
     <width>1186</width>
-    <height>841</height>
+    <height>848</height>
    </rect>
   </property>
   <property name="windowTitle">
@@ -17,10 +17,16 @@
    <property name="geometry">
     <rect>
      <x>0</x>
-     <y>0</y>
+     <y>5</y>
      <width>1031</width>
-     <height>841</height>
+     <height>835</height>
     </rect>
+   </property>
+   <property name="font">
+    <font>
+     <family>微软雅黑</family>
+     <pointsize>10</pointsize>
+    </font>
    </property>
    <row>
     <property name="text">
@@ -52,10 +58,16 @@
    <property name="geometry">
     <rect>
      <x>1050</x>
-     <y>400</y>
+     <y>390</y>
      <width>121</width>
-     <height>41</height>
+     <height>51</height>
     </rect>
+   </property>
+   <property name="font">
+    <font>
+     <family>幼圆</family>
+     <pointsize>11</pointsize>
+    </font>
    </property>
    <property name="text">
     <string>添加到本地</string>
@@ -65,10 +77,16 @@
    <property name="geometry">
     <rect>
      <x>1050</x>
-     <y>400</y>
+     <y>390</y>
      <width>121</width>
-     <height>41</height>
+     <height>51</height>
     </rect>
+   </property>
+   <property name="font">
+    <font>
+     <family>幼圆</family>
+     <pointsize>11</pointsize>
+    </font>
    </property>
    <property name="text">
     <string>确定</string>

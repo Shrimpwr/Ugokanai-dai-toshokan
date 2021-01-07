@@ -18,13 +18,14 @@
     <rect>
      <x>0</x>
      <y>30</y>
-     <width>911</width>
+     <width>931</width>
      <height>811</height>
     </rect>
    </property>
    <property name="font">
     <font>
      <family>微软雅黑</family>
+     <pointsize>10</pointsize>
     </font>
    </property>
    <row>
@@ -57,6 +58,15 @@
      <height>31</height>
     </rect>
    </property>
+   <property name="font">
+    <font>
+     <family>Consolas</family>
+     <pointsize>11</pointsize>
+     <weight>50</weight>
+     <italic>false</italic>
+     <bold>false</bold>
+    </font>
+   </property>
    <property name="text">
     <string>TextLabel</string>
    </property>
@@ -67,8 +77,8 @@
   <widget class="QLabel" name="coverlabel">
    <property name="geometry">
     <rect>
-     <x>955</x>
-     <y>220</y>
+     <x>960</x>
+     <y>260</y>
      <width>191</width>
      <height>281</height>
     </rect>
@@ -81,15 +91,15 @@
    <property name="geometry">
     <rect>
      <x>1000</x>
-     <y>591</y>
-     <width>101</width>
-     <height>41</height>
+     <y>640</y>
+     <width>111</width>
+     <height>51</height>
     </rect>
    </property>
    <property name="font">
     <font>
-     <family>微软雅黑</family>
-     <pointsize>10</pointsize>
+     <family>幼圆</family>
+     <pointsize>11</pointsize>
     </font>
    </property>
    <property name="text">
@@ -101,14 +111,14 @@
     <rect>
      <x>1000</x>
      <y>320</y>
-     <width>101</width>
-     <height>41</height>
+     <width>111</width>
+     <height>51</height>
     </rect>
    </property>
    <property name="font">
     <font>
-     <family>微软雅黑</family>
-     <pointsize>10</pointsize>
+     <family>幼圆</family>
+     <pointsize>11</pointsize>
     </font>
    </property>
    <property name="text">
@@ -119,15 +129,15 @@
    <property name="geometry">
     <rect>
      <x>1000</x>
-     <y>410</y>
-     <width>101</width>
-     <height>41</height>
+     <y>400</y>
+     <width>111</width>
+     <height>51</height>
     </rect>
    </property>
    <property name="font">
     <font>
-     <family>微软雅黑</family>
-     <pointsize>10</pointsize>
+     <family>幼圆</family>
+     <pointsize>11</pointsize>
     </font>
    </property>
    <property name="text">
@@ -138,7 +148,7 @@
    <property name="geometry">
     <rect>
      <x>990</x>
-     <y>560</y>
+     <y>610</y>
      <width>131</width>
      <height>20</height>
     </rect>
@@ -152,20 +162,23 @@
    <property name="text">
     <string>TextLabel</string>
    </property>
+   <property name="alignment">
+    <set>Qt::AlignCenter</set>
+   </property>
   </widget>
   <widget class="QPushButton" name="btn_hash">
    <property name="geometry">
     <rect>
      <x>1000</x>
-     <y>90</y>
-     <width>101</width>
-     <height>41</height>
+     <y>130</y>
+     <width>111</width>
+     <height>51</height>
     </rect>
    </property>
    <property name="font">
     <font>
-     <family>微软雅黑</family>
-     <pointsize>10</pointsize>
+     <family>幼圆</family>
+     <pointsize>11</pointsize>
     </font>
    </property>
    <property name="text">
@@ -176,15 +189,15 @@
    <property name="geometry">
     <rect>
      <x>1000</x>
-     <y>140</y>
-     <width>101</width>
-     <height>41</height>
+     <y>190</y>
+     <width>111</width>
+     <height>51</height>
     </rect>
    </property>
    <property name="font">
     <font>
-     <family>微软雅黑</family>
-     <pointsize>10</pointsize>
+     <family>幼圆</family>
+     <pointsize>11</pointsize>
     </font>
    </property>
    <property name="text">
@@ -217,15 +230,15 @@
    <property name="geometry">
     <rect>
      <x>1000</x>
-     <y>90</y>
-     <width>101</width>
-     <height>41</height>
+     <y>130</y>
+     <width>111</width>
+     <height>51</height>
     </rect>
    </property>
    <property name="font">
     <font>
-     <family>微软雅黑</family>
-     <pointsize>10</pointsize>
+     <family>幼圆</family>
+     <pointsize>11</pointsize>
     </font>
    </property>
    <property name="text">

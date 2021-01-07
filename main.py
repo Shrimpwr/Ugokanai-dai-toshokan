@@ -34,13 +34,13 @@ class FrameBookPage(QWidget, Ui_book_page):
         self.tableWidget.setShowGrid(False)
         self.tableWidget.horizontalHeader().setSectionResizeMode(QHeaderView.Fixed)
         self.tableWidget.setColumnWidth(0, 100)
-        self.tableWidget.setColumnWidth(1, 528) 
+        self.tableWidget.setColumnWidth(1, 548) 
         self.tableWidget.setColumnWidth(2, 260)
         self.tableWidget.verticalHeader().setSectionResizeMode(QHeaderView.ResizeToContents)
-        font = QtGui.QFont()
-        font.setFamily("微软雅黑")
-        font.setPointSize(10)
-        self.label.setFont(font)
+        # font = QtGui.QFont()
+        # font.setFamily("Co")
+        # font.setPointSize(10)
+        # self.label.setFont(font)
         self.label.setText("root")
         self.lab_proval.setText('')
         self.btn_download.hide()
@@ -344,7 +344,6 @@ class MainWidget(QWidget, Ui_Form):
         self.setupUi(self)
         # 实例化一个堆叠布局
         self.qsl = QStackedLayout(self.frame)
-        self.groupBox.setStyleSheet("border:0px")
         # 实例化分页面
         self.book = FrameBookPage()
         self.search = FrameSearchPage()
@@ -353,6 +352,23 @@ class MainWidget(QWidget, Ui_Form):
         self.qsl.addWidget(self.book)
         self.qsl.addWidget(self.search)
         self.qsl.addWidget(self.result)
+        # 外观设置
+        self.groupBox.setStyleSheet("border:0px")
+        #self.setStyleSheet("background-color:#BBFFFF")
+        #self.book.tableWidget.setStyleSheet("border:0px")
+        self.setWindowIcon(QtGui.QIcon('./UI/patchouli2.png'))
+        self.btn_manage.setStyleSheet(
+            # "QPushButton{color:rgb(101,153,26)}" #按键前景色
+            #"QPushButton{background-color:#00F5FF}"  #按键背景色
+            "QPushButton:hover{background-color:#FFFAFA}" #光标移动到上面后的背景色
+            # "QPushButton:pressed{background-color:rgb(180,180,180);border: None;}" #按下时的样式
+        )
+        self.btn_search.setStyleSheet(
+            # "QPushButton{color:rgb(101,153,26)}" #按键前景色
+            #"QPushButton{background-color:#00F5FF}"  #按键背景色
+            "QPushButton:hover{background-color:#FFFAFA}" #光标移动到上面后的背景色
+            # "QPushButton:pressed{background-color:rgb(180,180,180);border: None;}" #按下时的样式
+        )
         # 控制函数
         self.sig = Signal() 
         self.controller()

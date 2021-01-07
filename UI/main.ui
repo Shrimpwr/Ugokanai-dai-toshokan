@@ -6,7 +6,7 @@
    <rect>
     <x>0</x>
     <y>0</y>
-    <width>1344</width>
+    <width>1399</width>
     <height>846</height>
    </rect>
   </property>
@@ -16,7 +16,7 @@
   <widget class="QFrame" name="frame">
    <property name="geometry">
     <rect>
-     <x>150</x>
+     <x>210</x>
      <y>0</y>
      <width>1191</width>
      <height>851</height>
@@ -34,7 +34,7 @@
     <rect>
      <x>0</x>
      <y>-10</y>
-     <width>151</width>
+     <width>221</width>
      <height>861</height>
     </rect>
    </property>
@@ -45,14 +45,14 @@
     <property name="geometry">
      <rect>
       <x>0</x>
-      <y>180</y>
-      <width>151</width>
-      <height>51</height>
+      <y>450</y>
+      <width>221</width>
+      <height>71</height>
      </rect>
     </property>
     <property name="font">
      <font>
-      <family>微软雅黑</family>
+      <family>幼圆</family>
       <pointsize>11</pointsize>
      </font>
     </property>
@@ -64,19 +64,60 @@
     <property name="geometry">
      <rect>
       <x>0</x>
-      <y>320</y>
-      <width>151</width>
-      <height>51</height>
+      <y>380</y>
+      <width>221</width>
+      <height>71</height>
      </rect>
     </property>
     <property name="font">
      <font>
-      <family>微软雅黑</family>
+      <family>幼圆</family>
       <pointsize>11</pointsize>
      </font>
     </property>
     <property name="text">
      <string>本地书架</string>
+    </property>
+   </widget>
+   <widget class="QLabel" name="label">
+    <property name="geometry">
+     <rect>
+      <x>0</x>
+      <y>30</y>
+      <width>201</width>
+      <height>331</height>
+     </rect>
+    </property>
+    <property name="text">
+     <string/>
+    </property>
+    <property name="pixmap">
+     <pixmap>Patchouli_Knowledge2.jpg.png</pixmap>
+    </property>
+    <property name="scaledContents">
+     <bool>true</bool>
+    </property>
+   </widget>
+   <widget class="QLabel" name="label_2">
+    <property name="geometry">
+     <rect>
+      <x>70</x>
+      <y>825</y>
+      <width>81</width>
+      <height>20</height>
+     </rect>
+    </property>
+    <property name="font">
+     <font>
+      <family>Courier</family>
+      <pointsize>10</pointsize>
+     </font>
+    </property>
+    <property name="text">
+     <string>v 1.00</string>
+    </property>
+    <property name="alignment">
+     <set>Qt::AlignCenter</set>
     </property>
    </widget>
   </widget>
