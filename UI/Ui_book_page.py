@@ -36,7 +36,7 @@ class Ui_book_page(object):
         self.label.setTextFormat(QtCore.Qt.PlainText)
         self.label.setObjectName("label")
         self.coverlabel = QtWidgets.QLabel(book_page)
-        self.coverlabel.setGeometry(QtCore.QRect(950, 200, 191, 281))
+        self.coverlabel.setGeometry(QtCore.QRect(955, 220, 191, 281))
         self.coverlabel.setText("")
         self.coverlabel.setObjectName("coverlabel")
         self.btn_download = QtWidgets.QPushButton(book_page)
