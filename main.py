@@ -16,6 +16,7 @@ from UI.Ui_result_page import Ui_result_page
 # 导入功能模块
 from books_manage import __init__, __finish__, add_book, add_dir, download_book, del_book, search_online, del_dir, treenode
 
+
 class Signal(QObject): # 自定义信号
     search_done = pyqtSignal()
 
@@ -371,7 +372,7 @@ class MainWidget(QWidget, Ui_Form):
         self.groupBox.setStyleSheet("border:0px")
         #self.setStyleSheet("background-color:#BBFFFF")
         #self.book.tableWidget.setStyleSheet("border:0px")
-        self.setWindowIcon(QtGui.QIcon('./UI/patchouli2.png'))
+        self.setWindowIcon(QtGui.QIcon('./UI/patchouli.png'))
         self.btn_manage.setStyleSheet(
             # "QPushButton{color:rgb(101,153,26)}" #按键前景色
             #"QPushButton{background-color:#00F5FF}"  #按键背景色

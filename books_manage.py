@@ -4,6 +4,7 @@ import libnum
 import download
 import requests
 import wget
+import subprocess
 
 class treenode: # 利用树形结构实现文件夹操作，支持创建，删除文件夹，以及文件夹内元素（书籍或文件夹）的插入、删除
     def __init__(self, is_dir, info, sons):

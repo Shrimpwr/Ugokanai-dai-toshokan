@@ -41,7 +41,7 @@ class Ui_Form(object):
         self.label = QtWidgets.QLabel(self.groupBox)
         self.label.setGeometry(QtCore.QRect(10, 50, 201, 331))
         self.label.setText("")
-        self.label.setPixmap(QtGui.QPixmap("c:\\Users\\Shrimpwr\\Desktop\\Study\\softwaredev_course_design\\source\\UI\\Patchouli_Knowledge2.jpg.png"))
+        self.label.setPixmap(QtGui.QPixmap(".\\UI\\Patchouli_Knowledge2.jpg.png"))
         self.label.setScaledContents(True)
         self.label.setObjectName("label")
         self.label_2 = QtWidgets.QLabel(self.groupBox)
