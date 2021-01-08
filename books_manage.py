@@ -3,7 +3,6 @@ import json
 import libnum
 import download
 import requests
-import wget
 import subprocess
 
 class treenode: # 利用树形结构实现文件夹操作，支持创建，删除文件夹，以及文件夹内元素（书籍或文件夹）的插入、删除
@@ -195,7 +194,8 @@ def download_book(book): # 下载指定书籍
     book.info["file_type"] = file_type
 
 def search_online(keyword): # 运行在线搜索爬虫
-    os.system(r"cd creeper && scrapy crawl zlib_search -a keyword=" + keyword + " -a page=1")
+    #os.system(r"cd creeper && scrapy crawl zlib_search -a keyword=" + keyword + " -a page=1")
+    subprocess.run("cd creeper && scrapy crawl zlib_search -a keyword=" + keyword + " -a page=1", shell=True)
 
 if __name__ == "__main__":
     search_online("python")
