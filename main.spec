@@ -11,16 +11,14 @@ a = Analysis(['main.py',
             'C:\\Users\\Shrimpwr\\Desktop\\Study\\softwaredev_course_design\\source\\UI\\Ui_book_page.py',
             'C:\\Users\\Shrimpwr\\Desktop\\Study\\softwaredev_course_design\\source\\UI\\Ui_main.py',
             'C:\\Users\\Shrimpwr\\Desktop\\Study\\softwaredev_course_design\\source\\UI\\Ui_result_page.py',
-            'C:\\Users\\Shrimpwr\\Desktop\\Study\\softwaredev_course_design\\source\\UI\\Ui_search_page.py'
+            'C:\\Users\\Shrimpwr\\Desktop\\Study\\softwaredev_course_design\\source\\UI\\Ui_search_page.py',
+            'C:\\Users\\Shrimpwr\\Desktop\\Study\\softwaredev_course_design\\source\\UI\\Ui_search_page.py',
             ],
              pathex=['C:\\Users\\Shrimpwr\\Desktop\\Study\\softwaredev_course_design\\source'],
              binaries=[],
              datas=[
-                 (SETUP_DIR + "UI\\Patchouli_Knowledge1.jpg", "UI\\Patchouli_Knowledge1.png"), 
-                 (SETUP_DIR + "UI\\patchouli2.jpg", "UI\\patchouli2.jpg"), 
-                 (SETUP_DIR + "data\\booklist.json", "data\\booklist.json"),
-                 (SETUP_DIR + "data\\booklist.json", "data\\dlink.json"),
-                 (SETUP_DIR + "data\\booklist.json", "data\\search_results.json")
+                 (SETUP_DIR + "UI", "UI"), 
+                 (SETUP_DIR + "data", "data")
                 ],
              hiddenimports=[],
              hookspath=[],
