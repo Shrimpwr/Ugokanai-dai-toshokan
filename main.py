@@ -4,7 +4,7 @@ import json
 from tempfile import tempdir
 import requests
 from PyQt5 import QtGui, QtWidgets
-from PyQt5.QtCore import Qt, QObject, pyqtSignal, pyqtSlot
+from PyQt5.QtCore import Qt, QObject, pyqtSignal, pyqtSlot, QCoreApplication
 from PyQt5.QtWidgets import QApplication, QStackedLayout, QWidget, QTableWidgetItem, QHeaderView, QMessageBox, QAbstractItemView, QMenu, QInputDialog
 from scrapy.selector.unified import SelectorList
 
@@ -473,6 +473,7 @@ class MainWidget(QWidget, Ui_Form):
 
 if __name__ == '__main__':
     root, hashtable = __init__()
+    QCoreApplication.setAttribute(Qt.AA_EnableHighDpiScaling) #保持弹出UI的大小
     app = QApplication(sys.argv)
     ui = MainWidget()
     ui.show()
