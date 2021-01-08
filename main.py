@@ -134,7 +134,10 @@ class FrameBookPage(QWidget, Ui_book_page):
         keyword = self.lineEdit.text()
         temp = hashtable.search(keyword)
         temp_dir = treenode(True, {"title": "search results"}, [])
-        temp_dir.father = self.current_dir
+        if self.label.text() == "search results":
+            temp_dir.father = self.current_dir.father
+        else:
+            temp_dir.father = self.current_dir
         self.current_dir = temp_dir
         self.label.setText("search results")
         if temp != -1:
@@ -274,6 +277,7 @@ class FrameBookPage(QWidget, Ui_book_page):
         if self.current_dir != root and num > 0:
                 num -= 1
         download_book(self.current_dir.sons[num])
+        __finish__(root)
         self.btn_download.setText("已下载")
         self.btn_download.setEnabled(False)
         msgBox = QMessageBox()
@@ -453,6 +457,7 @@ class MainWidget(QWidget, Ui_Form):
             selectedsList = selections.selectedRows()
             for r in selectedsList:
                 add_book(self.book.current_dir, self.result.resultlist[r.row()], hashtable)
+            __finish__(root)
             self.book.show_dircontent(self.book.current_dir, self.book.tableWidget)
             msgBox = QMessageBox()
             msgBox.setWindowTitle('提示')
