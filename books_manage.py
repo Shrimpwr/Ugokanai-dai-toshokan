@@ -194,4 +194,7 @@ def download_book(book): # 下载指定书籍
     book.info["file_type"] = file_type
 
 def search_online(keyword): # 运行在线搜索爬虫
-    os.system(r"search_spider.bat " + keyword.replace(" ", "%20"))
+    os.system(r"cd creeper && scrapy crawl zlib_search -a keyword=" + keyword + " -a page=1")
+
+if __name__ == "__main__":
+    search_online("python")

@@ -28,7 +28,7 @@ def get_real_address(url):
 def getdlink(link):
     dlink = file_type = ""
     while "dtoken" not in dlink:
-        os.system(r"getdlink_spider.bat " + link)
+        os.system("cd creeper && scrapy crawl zlib_getdlink -a link=" + link)
         with open('./data/dlink.json', 'r') as f: data = json.load(f)[0]
         dlink, file_type = data.values()
         dlink = get_real_address(dlink)
