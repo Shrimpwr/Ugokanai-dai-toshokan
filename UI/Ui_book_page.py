@@ -69,7 +69,7 @@ class Ui_book_page(object):
         self.btn_disagree.setFont(font)
         self.btn_disagree.setObjectName("btn_disagree")
         self.lab_proval = QtWidgets.QLabel(book_page)
-        self.lab_proval.setGeometry(QtCore.QRect(990, 610, 131, 20))
+        self.lab_proval.setGeometry(QtCore.QRect(970, 610, 171, 20))
         font = QtGui.QFont()
         font.setFamily("Courier")
         font.setPointSize(10)
